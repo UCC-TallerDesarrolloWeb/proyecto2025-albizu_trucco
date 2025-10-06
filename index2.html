@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="author" content="Augusto Albizu y Mariano Trucco" />
+    <meta
+      name="description"
+      content="Resultados de búsqueda de vuelos en AM Viajes: ordená por precio u horario y elegí tu pasaje."
+    />
+    <meta
+      name="keywords"
+      content="resultados, vuelos, precios, horarios, AM Viajes"
+    />
+
+    <title>AMviajes - Vuelos</title>
+    <link rel="stylesheet" href="styles.css" />
+
+    <script type="text/javascript" src="app.js" defer></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=SUSE+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="Imagenes/Logo AM.png" type="image/x-icon" />
+  </head>
+  <body class="body2" onload="initResultados(); initAuth()">
+    <header class="topbar">
+      <div class="brand">
+        <a href="index.html" class="logo" aria-label="Inicio">
+          <img src="Imagenes/Logo AM.png" alt="AM Viajes" />
+        </a>
+      </div>
+    </header>
+
+    <main class="container" id="resultados">
+      <div class="info-vuelo" id="info-vuelo"></div>
+      <div class="info-bar orden-bar">
+        <label class="suse-mono" for="ordenar">Ordenar por:</label>
+        <select id="ordenar" onchange="aplicarOrden()">
+          <option value="precio-asc">Precio (menor a mayor)</option>
+          <option value="precio-desc">Precio (mayor a menor)</option>
+          <option value="hora-asc">Hora (00 → 23:59)</option>
+          <option value="hora-desc">Hora (23:59 → 00)</option>
+        </select>
+      </div>
+
+      <div class="lista-vuelos" id="lista-vuelos"></div>
+    </main>
+  </body>
+</html>

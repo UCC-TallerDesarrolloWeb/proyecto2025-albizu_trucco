@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="Augusto Albizu y Mariano Trucco" />
+    <meta
+      name="description"
+      content="Pasaje emitido en AM Viajes con datos del vuelo seleccionado y total pagado."
+    />
+    <meta name="keywords" content="pasaje, ticket, vuelo, AM Viajes" />
+
+    <title>AMviajes - Pasaje</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="text/javascript" src="app.js" defer></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=SUSE+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="Imagenes/Logo AM.png" type="image/x-icon" />
+  </head>
+
+  <body class="body3" onload="initPasaje(); initAuth()">
+    <header class="topbar3">
+      <div class="brand">
+        <a href="index.html" class="logo3" aria-label="Inicio">
+          <img src="Imagenes/Logo AM.png" alt="AM Viajes" />
+        </a>
+      </div>
+      <h1>Muchas gracias!</h1>
+    </header>
+
+    <main class="container">
+      <div id="pasaje" class="tarjeta-pasaje">
+        <div class="overlay-fondo"></div>
+
+        <div class="pasaje-contenido">
+          <div class="pasaje-header">
+            <h2>Pasaje aéreo</h2>
+          </div>
+
+          <div class="pasaje-info">
+            <p><strong>Nombre:</strong> <span id="nombreUsuario"></span></p>
+            <p><strong>Aerolínea:</strong> <span id="aerolinea"></span></p>
+            <p><strong>Pasajeros: </strong><span id="pasajeros"></span></p>
+            <hr />
+
+            <p><strong>Origen:</strong> <span id="origenTxt"></span></p>
+            <p><strong>Destino:</strong> <span id="destinoTxt"></span></p>
+            <p><strong>Fecha ida:</strong> <span id="fechaIdaTxt"></span></p>
+            <p><strong>Hora ida:</strong> <span id="horaIdaTxt"></span></p>
+
+            <div id="bloqueVuelta" class="hidden">
+              <hr />
+
+              <p><strong>Origen:</strong> <span id="origenVueltaTxt"></span></p>
+              <p>
+                <strong>Destino:</strong> <span id="destinoVueltaTxt"></span>
+              </p>
+              <p>
+                <strong>Fecha vuelta:</strong> <span id="fechaVueltaTxt"></span>
+              </p>
+              <p>
+                <strong>Hora vuelta:</strong> <span id="horaVueltaTxt"></span>
+              </p>
+            </div>
+            <hr />
+            <p>
+              <strong>Total pagado:</strong>
+              <span id="precioTotalTxt"></span>
+            </p>
+          </div>
+
+          <div class="pasaje-footer">
+            <img
+              src="Imagenes/Logo AM.png"
+              alt="Logo empresa"
+              class="logo-inferior"
+            />
+            <img
+              src="Imagenes/pasaje.png"
+              alt="Código de barras"
+              class="codigo-barra"
+            />
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="author" content="Augusto Albizu y Mariano Trucco" />
+    <meta
+      name="description"
+      content="Buscá y compará vuelos en AM Viajes. Elegí origen, destino, fechas y pasajeros para encontrar tu mejor opción."
+    />
+    <meta
+      name="keywords"
+      content="vuelos, pasajes, viajes, AM Viajes, buscar vuelos, Argentina"
+    />
+
+    <title>AMviajes</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script type="text/javascript" src="app.js" defer></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=SUSE+Mono:wght@400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="shortcut icon" href="Imagenes/Logo AM.png" type="image/x-icon" />
+  </head>
+  <body class="body1" onload="initIndex(); initAuth()">
+    <header class="topbar">
+      <div id="modal-login" class="modal hidden">
+        <div class="modal-content">
+          <h3>Iniciar sesión</h3>
+
+          <label for="login-usuario">Usuario</label>
+          <input
+            id="login-usuario"
+            placeholder="Usuario"
+            size="20"
+            maxlength="30"
+          />
+
+          <label for="login-clave">Contraseña</label>
+          <input
+            id="login-clave"
+            type="password"
+            placeholder="Contraseña"
+            size="20"
+            maxlength="30"
+          />
+
+          <button
+            id="btnLoginConfirmar"
+            class="btn primary"
+            onclick="confirmarLogin()"
+          >
+            Entrar
+          </button>
+          <button id="btnLoginCerrar" class="btn ghost" onclick="cerrarLogin()">
+            Cerrar
+          </button>
+        </div>
+      </div>
+
+      <div id="modal-register" class="modal hidden">
+        <div class="modal-content">
+          <h3>Registrar usuario</h3>
+
+          <label for="reg-usuario">Nuevo usuario</label>
+          <input
+            id="reg-usuario"
+            placeholder="Nuevo usuario"
+            size="20"
+            maxlength="30"
+          />
+
+          <label for="reg-clave">Contraseña</label>
+          <input
+            id="reg-clave"
+            type="password"
+            placeholder="Contraseña"
+            size="20"
+            maxlength="30"
+          />
+
+          <button
+            id="btnRegisterConfirmar"
+            class="btn primary"
+            onclick="confirmarRegistro()"
+          >
+            Registrar
+          </button>
+          <button
+            id="btnRegisterCerrar"
+            class="btn ghost"
+            onclick="cerrarRegistro()"
+          >
+            Cerrar
+          </button>
+        </div>
+      </div>
+
+      <div class="brand">
+        <a href="index.html" class="logo" aria-label="Inicio">
+          <img src="Imagenes/Logo AM.png" alt="AM Viajes" />
+        </a>
+      </div>
+      <nav class="auth">
+        <button id="btnAbrirLogin" class="btn ghost" onclick="abrirLogin()">
+          Iniciar sesión
+        </button>
+        <button id="btnAbrirRegistro" class="btn" onclick="abrirRegistro()">
+          Registrarse
+        </button>
+
+        <div class="perfil-menu hidden" id="perfilMenu">
+          <div class="perfil-icono">
+            <img
+              src="Imagenes/Perfil.png"
+              alt="Perfil"
+              id="perfilBtn"
+              onclick="togglePerfilDropdown()"
+            />
+            <div id="perfilDropdown" class="perfil-dropdown hidden">
+              <button
+                id="btnCerrarSesion"
+                class="btn ghost"
+                onclick="cerrarSesion()"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="container">
+      <form
+        id="buscador"
+        class="buscador-wrap"
+        novalidate="novalidate"
+        onsubmit="return onBuscarSubmit(event)"
+      >
+        <div class="search-card">
+          <div class="field passenger-select">
+            <label class="suse-mono pasajeros" for="pasajeros-display"
+              >Pasajeros</label
+            >
+            <input
+              id="pasajeros-display"
+              class="select-display"
+              type="text"
+              value="1"
+              readonly
+              onclick="togglePasajeros()"
+              onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePasajeros();}"
+              aria-haspopup="dialog"
+              aria-expanded="false"
+              aria-controls="pasajeros-dropdown"
+              aria-label="Cantidad de pasajeros"
+            />
+
+            <div id="pasajeros-dropdown" class="dropdown hidden">
+              <div class="passenger-group">
+                <span>Adultos <br /><small>(&gt; 12 años)</small></span>
+                <div class="counter">
+                  <button type="button" class="minus" onclick="dec('adultos')">
+                    -
+                  </button>
+                  <span class="value" id="adultos" data-min="1">1</span>
+                  <button type="button" class="plus" onclick="inc('adultos')">
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div class="passenger-group">
+                <span>Niños<br /><small>(2-11 años)</small></span>
+                <div class="counter">
+                  <button type="button" class="minus" onclick="dec('ninos')">
+                    -
+                  </button>
+                  <span class="value" id="ninos" data-min="0">0</span>
+                  <button type="button" class="plus" onclick="inc('ninos')">
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <div class="passenger-group">
+                <span>Bebés <br /><small>(&lt; 2 años)</small></span>
+                <div class="counter">
+                  <button type="button" class="minus" onclick="dec('bebes')">
+                    -
+                  </button>
+                  <span class="value" id="bebes" data-min="0">0</span>
+                  <button type="button" class="plus" onclick="inc('bebes')">
+                    +
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                id="cerrarDropdown"
+                class="btn"
+                onclick="cerrarPasajeros()"
+              >
+                Aceptar
+              </button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="suse-mono origen" for="origen">Origen</label>
+            <select
+              id="origen"
+              name="origen"
+              required
+              onchange="onOrigenChange()"
+            >
+              <option value="" selected="selected" disabled="disabled">
+                Seleccionar...
+              </option>
+            </select>
+          </div>
+
+          <button
+            type="button"
+            id="swap"
+            class="swap"
+            title="Intercambiar"
+            aria-label="Intercambiar"
+            onclick="onSwapClick()"
+          >
+            ⇄
+          </button>
+
+          <div class="field">
+            <label class="suse-mono destino" for="destino">Destino</label>
+            <select
+              id="destino"
+              name="destino"
+              required
+              onchange="onDestinoChange()"
+            >
+              <option value="" selected="selected" disabled="disabled">
+                Seleccionar...
+              </option>
+            </select>
+          </div>
+
+          <div class="field">
+            <input type="checkbox" id="soloIda" onchange="onSoloIdaChange()" />
+            <label class="suse-mono checkbox" for="soloIda">Solo ida</label>
+          </div>
+
+          <div class="field">
+            <label class="suse-mono fechaIda" for="fechaIda">Fecha ida</label>
+            <input
+              id="fechaIda"
+              name="fechaIda"
+              type="date"
+              required
+              onchange="onFechaIdaChange()"
+            />
+          </div>
+
+          <div class="field" id="groupVuelta">
+            <label class="suse-mono fechaVuelta" for="fechaVuelta"
+              >Fecha vuelta</label
+            >
+            <input id="fechaVuelta" name="fechaVuelta" type="date" />
+          </div>
+          <input type="hidden" name="pasajeros" id="pasajeros" value="1" />
+          <p id="msg" class="msg" aria-live="polite"></p>
+          <button class="btn-lupa" id="btnBuscar" type="submit">
+            <img src="Imagenes/lupa.png" alt="Buscar" />
+          </button>
+        </div>
+      </form>
+    </main>
+    <footer class="footer"></footer>
+
+    <div id="modal-info" class="modal hidden" role="dialog" aria-modal="true">
+      <div class="modal-content modal-sm">
+        <p id="modal-info-text" class="modal-msg">Mensaje</p>
+        <button id="modal-info-ok" class="btn primary">Aceptar</button>
+      </div>
+    </div>
+  </body>
+</html>
