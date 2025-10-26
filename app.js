@@ -334,8 +334,16 @@ window.initIndex = () => {
   const mm = String(hoy.getMonth() + 1).padStart(2, "0");
   const dd = String(hoy.getDate()).padStart(2, "0");
   const min = `${yyyy}-${mm}-${dd}`;
-  if (sel("fechaIda")) sel("fechaIda").min = min;
-  if (sel("fechaVuelta")) sel("fechaVuelta").min = min;
+  const max = `2027-12-31`;
+
+  if (sel("fechaIda")) {
+    sel("fechaIda").min = min;
+    sel("fechaIda").max = max;
+  }
+  if (sel("fechaVuelta")) {
+    sel("fechaVuelta").min = min;
+    sel("fechaVuelta").max = max;
+  }
 
   if (sel("soloIda")) sel("soloIda").checked = false;
   window.onSoloIdaChange();
@@ -453,7 +461,7 @@ window.cerrarPasajeros = () => {
 };
 
 /**
- * Incrementa un contador (adultos/niños/bebés) y actualiza totales.
+ * Incrementa un contador (adultos/niños/bebés) respetando un máximo total de 10 pasajeros.
  * (HTML: onclick="inc('adultos'|'ninos'|'bebes')")
  * @method inc
  * @param {string} id - Id del span con el número a incrementar.
@@ -462,6 +470,22 @@ window.cerrarPasajeros = () => {
 window.inc = (id) => {
   const el = sel(id);
   if (!el) return;
+
+  // Obtener cantidades actuales
+  const adultos = parseInt(sel("adultos")?.textContent || "0", 10);
+  const ninos = parseInt(sel("ninos")?.textContent || "0", 10);
+  const bebes = parseInt(sel("bebes")?.textContent || "0", 10);
+
+  const totalActual = adultos + ninos + bebes;
+  const maxTotal = 10;
+
+  // Verificar límite total
+  if (totalActual >= maxTotal) {
+    dialogo(`El máximo permitido es ${maxTotal} pasajeros en total.`);
+    return;
+  }
+
+  // Si no se supera el límite, incrementar el grupo correspondiente
   let num = parseInt(el.textContent, 10);
   el.textContent = String(++num);
   actualizarTotalPasajeros();
