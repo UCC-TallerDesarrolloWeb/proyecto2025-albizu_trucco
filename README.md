@@ -3,7 +3,7 @@ Estructura de Proyecto Taller de Desarrollo Web - 2025
 
 # AM Viajes
 **Autores:** Augusto Albizu, Mariano Trucco  
-**GitHub Pages:** [https://usuario.github.io/proyecto2025-albizu_trucco](#)  
+**GitHub Pages:** [https://ucc-tallerdesarrolloweb.github.io/proyecto2025-albizu_trucco/](#)  
 **Descripción:** Busca y compra de vuelos (origen/destino, fechas, pasajeros) con emisión de pasaje simulado.
 
 ## Índice
@@ -29,12 +29,12 @@ Estructura de Proyecto Taller de Desarrollo Web - 2025
 | `Wireframe/` | (baja fidelidad) en PNG/JPG/PDF. Incluye desktop y mobile, y estados (errores, vacíos). |
 
 
-## Funcionalidades
+### Funcionalidades
 - Validación de formulario con mensajes accesibles.
 - Generación de vuelos aleatorios (0–5), precios por ruta y ordenamiento.
 - Emisión de pasaje con desglose de ida/vuelta y total.
 
-## Accesibilidad
+### Accesibilidad
 - `label/for` en inputs/selects, `alt` en imágenes.
 - `role="dialog"` y foco en modales.
 

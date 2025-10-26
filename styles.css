@@ -11,7 +11,7 @@ body.body1 {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  background-image: url("Imagenes/fondo\ aeropuerto.jpg");
+  background-image: url("Imagenes/fondo aeropuerto.jpg");
   background-size: cover;
   background-attachment: fixed;
 }
