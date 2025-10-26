@@ -151,7 +151,6 @@
               onclick="togglePasajeros()"
               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePasajeros();}"
               aria-haspopup="dialog"
-              aria-expanded="false"
               aria-controls="pasajeros-dropdown"
               aria-label="Cantidad de pasajeros"
             />
@@ -278,11 +277,11 @@
     </main>
     <footer class="footer"></footer>
 
-    <div id="modal-info" class="modal hidden" role="dialog" aria-modal="true">
+    <dialog id="modal-info" class="modal hidden">
       <div class="modal-content modal-sm">
         <p id="modal-info-text" class="modal-msg">Mensaje</p>
         <button id="modal-info-ok" class="btn primary">Aceptar</button>
       </div>
-    </div>
+    </dialog>
   </body>
 </html>

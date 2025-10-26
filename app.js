@@ -145,8 +145,11 @@ const saveUsers = (users) =>
  * @return {void}
  */
 window.initAuth = () => {
-  if (!localStorage.getItem("usuarios"))
+  // Crear usuario demo si aún no existe
+  if (!localStorage.getItem("usuarios")) {
     saveUsers([{ usuario: "prueba", clave: "123" }]);
+  }
+  // Verificar si hay una sesión activa o no
   actualizarSesion();
 };
 
@@ -207,12 +210,20 @@ window.cerrarRegistro = () =>
   document.getElementById("modal-register")?.classList.add("hidden");
 
 /**
- * Abre/cierra el dropdown del perfil.
+ * Abre o cierra el menú desplegable del perfil solo si hay una sesión activa.
+ * Si el usuario no inició sesión, no realiza ninguna acción.
  * @method togglePerfilDropdown
  * @return {void}
  */
 window.togglePerfilDropdown = () => {
-  document.getElementById("perfilDropdown")?.classList.toggle("hidden");
+  const sesion = localStorage.getItem("sesion");
+  const dropdown = document.getElementById("perfilDropdown");
+
+  // Si no hay sesión, no hacer nada
+  if (!sesion) return;
+
+  // Si hay sesión, mostrar u ocultar el dropdown normalmente
+  dropdown?.classList.toggle("hidden");
 };
 
 /**
@@ -475,7 +486,7 @@ window.dec = (id) => {
 };
 
 /**
- * Valida el formulario, genera resultados y navega a index2.
+ * Valida el formulario, genera resultados y navega a Vuelos.
  * (HTML: onsubmit="return onBuscarSubmit(event)")
  * @method onBuscarSubmit
  * @param {SubmitEvent} e - Evento de envío del formulario.
@@ -575,11 +586,11 @@ window.onBuscarSubmit = (e) => {
   }
 
   localStorage.setItem("vuelosGenerados", JSON.stringify(vuelos));
-  window.location.href = "index2.html";
+  window.location.href = "Vuelos.html";
   return false;
 };
 
-// ================== INDEX2 (resultados) ==================
+// ================== Vuelos (resultados) ==================
 
 let __vuelosOriginal = [];
 let __vuelosRenderizados = [];
@@ -749,10 +760,10 @@ window.seleccionarVuelo = (index) => {
     return;
   }
   localStorage.setItem("vueloSeleccionado", JSON.stringify(vuelo));
-  window.location.href = "index3.html";
+  window.location.href = "Pasajes.html";
 };
 
-// ================== INDEX3 (pasaje) ==================
+// ================== Pasajes (pasaje) ==================
 
 /**
  * Carga los datos del vuelo seleccionado y los imprime en el boleto.
@@ -771,7 +782,7 @@ window.initPasaje = () => {
   }
   if (!vuelo) {
     alert("No se ha seleccionado un vuelo.");
-    window.location.href = "index2.html";
+    window.location.href = "Vuelos.html";
     return;
   }
 
