@@ -1,3 +1,4 @@
+// --- CONTENIDO DE app.js (Lógica del sitio) ---
 const CIUDADES = ["Córdoba", "Buenos Aires", "Miami", "Madrid"];
 const fmtUSD = new Intl.NumberFormat("es-AR", {
   style: "currency",
