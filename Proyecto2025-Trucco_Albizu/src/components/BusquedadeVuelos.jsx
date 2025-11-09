@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CIUDADES, horaRandom, precioBasePara, allowedDestinos } from '../utils/Vueloutils';
-import lupaImg from '../assets/lupa.png';
+import { CIUDADES, horaRandom, precioBasePara, allowedDestinos } from './Vueloutils';
+import lupaImg from '@assets/lupa.png';
 
 const initialPassengers = { adultos: 1, ninos: 0, bebes: 0 };
 

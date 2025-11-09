@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { fmtUSD } from '../utils/Vueloutils';
-import logoImg from '../assets/Logo AM.png';
-import pasajeImg from '../assets/pasaje.png'; 
+import { fmtUSD } from '@components/Vueloutils';
+import logoImg from '@assets/Logo AM.png';
+import pasajeImg from '@assets/pasaje.png'; 
 const formatPassengerText = (busqueda) => {
     if (!busqueda || busqueda.pasajeros === 0) return '0 pasajeros';
 

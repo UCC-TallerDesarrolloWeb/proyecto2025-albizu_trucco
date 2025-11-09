@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth, soloLetras } from '../utils/authlogicas';
+import { useAuth, soloLetras } from './authlogicas';
 
 /**
  * Componente dinámico para los modales de Iniciar Sesión y Registrar Usuario.

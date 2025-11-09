@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useAuth } from '../utils/authlogicas'; 
-import AuthModal from '../components/Authmodal'; 
-
-import profileImg from '../assets/Perfil.png'; 
-import logoImg from '../assets/Logo AM.png'; 
+import { useAuth } from './authlogicas'; 
+import AuthModal from './Authmodal'; 
+import profileImg from '@assets/Perfil.png'; 
+import logoImg from '@assets/Logo AM.png'; 
 import { Link } from 'react-router-dom';
 
 
