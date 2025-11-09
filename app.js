@@ -275,6 +275,13 @@ window.confirmarRegistro = () => {
   const c = (cEl?.value || "").trim();
   if (!u || !c) return dialogo("Completá usuario y contraseña.");
 
+  for (let i = 0; i <= 9; i++) {
+    if (u.includes(i.toString())) {
+      dialogo("El nombre solo puede contener letras.");
+      return;
+    }
+  }
+
   const users = getUsers();
   if (users.find((x) => x.usuario === u)) {
     dialogo("Ese usuario ya existe.");
