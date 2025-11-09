@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { getSorted, fmtUSD } from '@components/Vueloutils';
 import logoImg from '@assets/Logo AM.png'; 
+
 const FlightCard = ({ vuelo, onSelect }) => {
     const {
         aerolinea, origen, destino, fechaIda, horaSalida,

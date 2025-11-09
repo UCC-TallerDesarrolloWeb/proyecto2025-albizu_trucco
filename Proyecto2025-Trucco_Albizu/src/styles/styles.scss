@@ -53,6 +53,7 @@ body, html {
   align-items: center;
   gap: 12px;
 }
+
 .logo {
   border: none;
   background: transparent;
@@ -60,23 +61,18 @@ body, html {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.logo img {
-  width: 200px;
-  height: auto;
-  object-fit: contain;
-  display: block;
+  img{
+    width: 200px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
 }
 
 .suse-mono {
   font-family: "SUSE Mono", monospace;
   font-weight: 400;
   font-style: normal;
-}
-
-.auth .btn {
-  margin-left: 8px;
 }
 
 .container {
@@ -98,6 +94,13 @@ body, html {
   width: 100%;
   box-sizing: border-box;
   overflow: visible;
+  select, input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .passenger-select{
+    grid-column: auto;
+  }
 }
 
 .buscador-wrap {
@@ -114,7 +117,14 @@ body, html {
   cursor: pointer;
   line-height: 0;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.25));
+  img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: block;
+  }
 }
+
 .dropdown {
   background-color: var(--blanco);
   border-radius: 10px;
@@ -126,13 +136,6 @@ body, html {
   z-index: 9999;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
   pointer-events: auto;
-}
-
-.btn-lupa img {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: block;
 }
 
 .swap {
@@ -149,13 +152,11 @@ body, html {
   display: flex;
   flex-direction: column;
   gap: 6px;
-}
-
-.field input,
-.field select {
-  padding: 10px;
-  border: 1px solid var(--negro);
-  border-radius: 10px;
+  input, select{
+    padding: 10px;
+    border: 1px solid var(--negro);
+    border-radius: 10px;
+  }
 }
 
 .checkbox {
@@ -170,6 +171,7 @@ body, html {
   justify-content: flex-end;
   margin-top: 4px;
 }
+
 .btn {
   padding: 10px 14px;
   border-radius: 12px;
@@ -177,11 +179,13 @@ body, html {
   background: #fff;
   cursor: pointer;
 }
+
 .btn.primary {
   background: var(--azul);
   color: #fff;
   border-color: var(--azul);
 }
+
 .msg {
   grid-column: 1/-1;
   margin: 0;
@@ -191,6 +195,7 @@ body, html {
 .hidden {
   display: none;
 }
+
 .select-display {
   display: flex;
   grid-template-columns: repeat(6, 1fr);
@@ -217,33 +222,30 @@ body, html {
   display: flex;
   align-items: center;
   gap: 6px;
-}
-
-.counter button {
-  width: 26px;
-  height: 26px;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  background: #f5f5f5;
-  cursor: pointer;
-  font-size: 18px;
-}
-
-.counter button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: #e0e0e0;
-  color: #999;
-}
-
-.counter input {
-  width: 44px;
-  text-align: center;
-  border: 1px solid #aaa;
-  border-radius: 8px;
-  background: var(--blanco);
-  font-size: 16px;
-  padding: 2px 4px;
+  button{
+    width: 26px;
+    height: 26px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    background: #f5f5f5;
+    cursor: pointer;
+    font-size: 18px;
+    &:disabled{
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #e0e0e0;
+      color: #999;
+    }
+  }
+  input{
+    width: 44px;
+    text-align: center;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    background: var(--blanco);
+    font-size: 16px;
+    padding: 2px 4px;
+  }
 }
 
 .qty {
@@ -279,10 +281,19 @@ body, html {
   justify-content: center;
   align-items: center;
   z-index: 200;
-}
-
-.modal.hidden {
-  display: none;
+  &.hidden{
+    display: none;
+  }
+  .modal-content{
+    &.modal-sm{
+      max-width: 360px;
+      text-align: center;
+    }
+    .modal-msg{
+      margin: 8px 0 14px;
+      font-weight: 600;
+    }
+  }
 }
 
 .modal-content {
@@ -293,15 +304,6 @@ body, html {
   flex-direction: column;
   gap: 10px;
   width: 260px;
-}
-
-.modal .modal-content.modal-sm {
-  max-width: 360px;
-  text-align: center;
-}
-.modal .modal-content .modal-msg {
-  margin: 8px 0 14px;
-  font-weight: 600;
 }
 
 .info-grid {
@@ -317,14 +319,16 @@ body, html {
   margin-bottom: 20px;
 }
 
-.info-item h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  color: var(--negro);
-}
-.info-item p {
-  margin: 0;
-  color: var(--negro);
+.info-item {
+  h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--negro);
+  }
+  p {
+    margin: 0;
+    color: var(--negro);
+  }
 }
 
 .lista-vuelos {
@@ -341,11 +345,19 @@ body, html {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: left;
   transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.tarjeta-vuelo:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  &:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  small{
+    display: block;
+    margin-top: 4px;
+  }
+  .separador{
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.15);
+    margin: 10px 0;
+  }
 }
 
 #origen,
@@ -358,7 +370,11 @@ body, html {
   display: flex;
   align-items: center;
   gap: 10px;
+  .btn{
+    margin-left: 8px;
+  }
 }
+
 .perfil-menu {
   position: relative;
   display: flex;
@@ -386,16 +402,9 @@ body, html {
   padding: 10px;
   width: 140px;
   z-index: 300;
-}
-
-.perfil-dropdown.hidden {
-  display: none;
-}
-
-.search-card select,
-.search-card input {
-  width: 100%;
-  box-sizing: border-box;
+  &.hidden{
+    display: none;
+  }
 }
 
 .body3 {
@@ -411,12 +420,15 @@ body, html {
   position: relative;
 }
 
-.logo3 img {
+.logo3 {
+  img{
   width: 200px;
   height: auto;
   object-fit: contain;
   display: block;
+  }
 }
+
 .tarjeta-pasaje {
   position: relative;
   background: rgba(255, 255, 255, 0.9);
@@ -439,11 +451,10 @@ body, html {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
-}
-
-.pasaje-header h2 {
-  font-family: "SUSE Mono", monospace;
-  color: #333;
+  h2{
+    font-family: "SUSE Mono", monospace;
+    color: #333;
+  }
 }
 
 .logo-empresa {
@@ -451,9 +462,11 @@ body, html {
   height: auto;
 }
 
-.pasaje-info p {
+.pasaje-info {
+  p{
   font-size: 1.1rem;
   margin: 6px 0;
+  }
 }
 
 .pasaje-footer {
@@ -478,10 +491,6 @@ body, html {
   width: 100%;
 }
 
-.search-card .passenger-select {
-  grid-column: auto;
-}
-
 .info-bar {
   background: var(--blanco);
   border-radius: 18px;
@@ -490,18 +499,17 @@ body, html {
   align-items: center;
   gap: 12px;
   margin: 10px 0 14px;
+  label{
+    font-weight: 600;
+  }
+  select{
+    padding: 6px 10px;
+    border-radius: 10px;
+  }
 }
 
 .orden-bar {
   width: 100%;
-}
-
-.info-bar label {
-  font-weight: 600;
-}
-.info-bar select {
-  padding: 6px 10px;
-  border-radius: 10px;
 }
 
 .sin-resultados {
@@ -517,16 +525,6 @@ body, html {
   text-align: center;
   padding: 30px;
   color: var(--blanco);
-}
-
-.tarjeta-vuelo small {
-  display: block;
-  margin-top: 4px;
-}
-.tarjeta-vuelo .separador {
-  border: 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
-  margin: 10px 0;
 }
 
 * {
