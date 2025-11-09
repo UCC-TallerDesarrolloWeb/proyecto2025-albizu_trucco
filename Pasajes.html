@@ -1,3 +1,4 @@
+// --- CONTENIDO DE Pasajes.html (Página Terciaria) ---
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -20,26 +21,26 @@
     <link rel="shortcut icon" href="Imagenes/Logo AM.png" type="image/x-icon" />
   </head>
 
-  <body class="body3" onload="initPasaje(); initAuth()">
-    <header class="topbar3">
-      <div class="brand">
-        <a href="index.html" class="logo3" aria-label="Inicio">
+  <body className="body3" onload="initPasaje(); initAuth()">
+    <header className="topbar3">
+      <div className="brand">
+        <a href="index.html" className="logo3" aria-label="Inicio">
           <img src="Imagenes/Logo AM.png" alt="AM Viajes" />
         </a>
       </div>
       <h1>Muchas gracias!</h1>
     </header>
 
-    <main class="container">
-      <div id="pasaje" class="tarjeta-pasaje">
-        <div class="overlay-fondo"></div>
+    <main className="container">
+      <div id="pasaje" className="tarjeta-pasaje">
+        <div className="overlay-fondo"></div>
 
-        <div class="pasaje-contenido">
-          <div class="pasaje-header">
+        <div className="pasaje-contenido">
+          <div className="pasaje-header">
             <h2>Pasaje aéreo</h2>
           </div>
 
-          <div class="pasaje-info">
+          <div className="pasaje-info">
             <p><strong>Nombre:</strong> <span id="nombreUsuario"></span></p>
             <p><strong>Aerolínea:</strong> <span id="aerolinea"></span></p>
             <p><strong>Pasajeros: </strong><span id="pasajeros"></span></p>
@@ -50,7 +51,7 @@
             <p><strong>Fecha ida:</strong> <span id="fechaIdaTxt"></span></p>
             <p><strong>Hora ida:</strong> <span id="horaIdaTxt"></span></p>
 
-            <div id="bloqueVuelta" class="hidden">
+            <div id="bloqueVuelta" className="hidden">
               <hr />
 
               <p><strong>Origen:</strong> <span id="origenVueltaTxt"></span></p>
@@ -71,16 +72,16 @@
             </p>
           </div>
 
-          <div class="pasaje-footer">
+          <div className="pasaje-footer">
             <img
               src="Imagenes/Logo AM.png"
               alt="Logo empresa"
-              class="logo-inferior"
+              className="logo-inferior"
             />
             <img
               src="Imagenes/pasaje.png"
               alt="Código de barras"
-              class="codigo-barra"
+              className="codigo-barra"
             />
           </div>
         </div>

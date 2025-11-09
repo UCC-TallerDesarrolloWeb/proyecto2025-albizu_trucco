@@ -1,3 +1,4 @@
+// --- CONTENIDO DE index.html (Página Principal) ---
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -22,10 +23,10 @@
     />
     <link rel="shortcut icon" href="Imagenes/Logo AM.png" type="image/x-icon" />
   </head>
-  <body class="body1" onload="initIndex(); initAuth()">
-    <header class="topbar">
-      <div id="modal-login" class="modal hidden">
-        <div class="modal-content">
+  <body className="body1" onload="initIndex(); initAuth()">
+    <header className="topbar">
+      <div id="modal-login" className="modal hidden">
+        <div className="modal-content">
           <h3>Iniciar sesión</h3>
 
           <label for="login-usuario">Usuario</label>
@@ -47,19 +48,19 @@
 
           <button
             id="btnLoginConfirmar"
-            class="btn primary"
+            className="btn primary"
             onclick="confirmarLogin()"
           >
             Entrar
           </button>
-          <button id="btnLoginCerrar" class="btn ghost" onclick="cerrarLogin()">
+          <button id="btnLoginCerrar" className="btn ghost" onclick="cerrarLogin()">
             Cerrar
           </button>
         </div>
       </div>
 
-      <div id="modal-register" class="modal hidden">
-        <div class="modal-content">
+      <div id="modal-register" className="modal hidden">
+        <div className="modal-content">
           <h3>Registrar usuario</h3>
 
           <label for="reg-usuario">Nuevo usuario</label>
@@ -81,14 +82,14 @@
 
           <button
             id="btnRegisterConfirmar"
-            class="btn primary"
+            className="btn primary"
             onclick="confirmarRegistro()"
           >
             Registrar
           </button>
           <button
             id="btnRegisterCerrar"
-            class="btn ghost"
+            className="btn ghost"
             onclick="cerrarRegistro()"
           >
             Cerrar
@@ -96,31 +97,31 @@
         </div>
       </div>
 
-      <div class="brand">
-        <a href="index.html" class="logo" aria-label="Inicio">
+      <div className="brand">
+        <a href="index.html" className="logo" aria-label="Inicio">
           <img src="Imagenes/Logo AM.png" alt="AM Viajes" />
         </a>
       </div>
-      <nav class="auth">
-        <button id="btnAbrirLogin" class="btn ghost" onclick="abrirLogin()">
+      <nav className="auth">
+        <button id="btnAbrirLogin" className="btn ghost" onclick="abrirLogin()">
           Iniciar sesión
         </button>
-        <button id="btnAbrirRegistro" class="btn" onclick="abrirRegistro()">
+        <button id="btnAbrirRegistro" className="btn" onclick="abrirRegistro()">
           Registrarse
         </button>
 
-        <div class="perfil-menu hidden" id="perfilMenu">
-          <div class="perfil-icono">
+        <div className="perfil-menu hidden" id="perfilMenu">
+          <div className="perfil-icono">
             <img
               src="Imagenes/Perfil.png"
               alt="Perfil"
               id="perfilBtn"
               onclick="togglePerfilDropdown()"
             />
-            <div id="perfilDropdown" class="perfil-dropdown hidden">
+            <div id="perfilDropdown" className="perfil-dropdown hidden">
               <button
                 id="btnCerrarSesion"
-                class="btn ghost"
+                className="btn ghost"
                 onclick="cerrarSesion()"
               >
                 Cerrar sesión
@@ -130,21 +131,21 @@
         </div>
       </nav>
     </header>
-    <main class="container">
+    <main className="container">
       <form
         id="buscador"
-        class="buscador-wrap"
+        className="buscador-wrap"
         novalidate="novalidate"
         onsubmit="return onBuscarSubmit(event)"
       >
-        <div class="search-card">
-          <div class="field passenger-select">
-            <label class="suse-mono pasajeros" for="pasajeros-display"
+        <div className="search-card">
+          <div className="field passenger-select">
+            <label className="suse-mono pasajeros" for="pasajeros-display"
               >Pasajeros</label
             >
             <input
               id="pasajeros-display"
-              class="select-display"
+              className="select-display"
               type="text"
               value="1"
               readonly
@@ -155,41 +156,41 @@
               aria-label="Cantidad de pasajeros"
             />
 
-            <div id="pasajeros-dropdown" class="dropdown hidden">
-              <div class="passenger-group">
+            <div id="pasajeros-dropdown" className="dropdown hidden">
+              <div className="passenger-group">
                 <span>Adultos <br /><small>(&gt; 12 años)</small></span>
-                <div class="counter">
-                  <button type="button" class="minus" onclick="dec('adultos')">
+                <div className="counter">
+                  <button type="button" className="minus" onclick="dec('adultos')">
                     -
                   </button>
-                  <span class="value" id="adultos" data-min="1">1</span>
-                  <button type="button" class="plus" onclick="inc('adultos')">
+                  <span className="value" id="adultos" data-min="1">1</span>
+                  <button type="button" className="plus" onclick="inc('adultos')">
                     +
                   </button>
                 </div>
               </div>
 
-              <div class="passenger-group">
+              <div className="passenger-group">
                 <span>Niños<br /><small>(2-11 años)</small></span>
-                <div class="counter">
-                  <button type="button" class="minus" onclick="dec('ninos')">
+                <div className="counter">
+                  <button type="button" className="minus" onclick="dec('ninos')">
                     -
                   </button>
-                  <span class="value" id="ninos" data-min="0">0</span>
-                  <button type="button" class="plus" onclick="inc('ninos')">
+                  <span className="value" id="ninos" data-min="0">0</span>
+                  <button type="button" className="plus" onclick="inc('ninos')">
                     +
                   </button>
                 </div>
               </div>
 
-              <div class="passenger-group">
+              <div className="passenger-group">
                 <span>Bebés <br /><small>(&lt; 2 años)</small></span>
-                <div class="counter">
-                  <button type="button" class="minus" onclick="dec('bebes')">
+                <div className="counter">
+                  <button type="button" className="minus" onclick="dec('bebes')">
                     -
                   </button>
-                  <span class="value" id="bebes" data-min="0">0</span>
-                  <button type="button" class="plus" onclick="inc('bebes')">
+                  <span className="value" id="bebes" data-min="0">0</span>
+                  <button type="button" className="plus" onclick="inc('bebes')">
                     +
                   </button>
                 </div>
@@ -198,7 +199,7 @@
               <button
                 type="button"
                 id="cerrarDropdown"
-                class="btn"
+                className="btn"
                 onclick="cerrarPasajeros()"
               >
                 Aceptar
@@ -206,8 +207,8 @@
             </div>
           </div>
 
-          <div class="field">
-            <label class="suse-mono origen" for="origen">Origen</label>
+          <div className="field">
+            <label className="suse-mono origen" for="origen">Origen</label>
             <select
               id="origen"
               name="origen"
@@ -223,7 +224,7 @@
           <button
             type="button"
             id="swap"
-            class="swap"
+            className="swap"
             title="Intercambiar"
             aria-label="Intercambiar"
             onclick="onSwapClick()"
@@ -231,8 +232,8 @@
             ⇄
           </button>
 
-          <div class="field">
-            <label class="suse-mono destino" for="destino">Destino</label>
+          <div className="field">
+            <label className="suse-mono destino" for="destino">Destino</label>
             <select
               id="destino"
               name="destino"
@@ -245,13 +246,13 @@
             </select>
           </div>
 
-          <div class="field">
+          <div className="field">
             <input type="checkbox" id="soloIda" onchange="onSoloIdaChange()" />
-            <label class="suse-mono checkbox" for="soloIda">Solo ida</label>
+            <label className="suse-mono checkbox" for="soloIda">Solo ida</label>
           </div>
 
-          <div class="field">
-            <label class="suse-mono fechaIda" for="fechaIda">Fecha ida</label>
+          <div className="field">
+            <label className="suse-mono fechaIda" for="fechaIda">Fecha ida</label>
             <input
               id="fechaIda"
               name="fechaIda"
@@ -261,26 +262,26 @@
             />
           </div>
 
-          <div class="field" id="groupVuelta">
-            <label class="suse-mono fechaVuelta" for="fechaVuelta"
+          <div className="field" id="groupVuelta">
+            <label className="suse-mono fechaVuelta" for="fechaVuelta"
               >Fecha vuelta</label
             >
             <input id="fechaVuelta" name="fechaVuelta" type="date" />
           </div>
           <input type="hidden" name="pasajeros" id="pasajeros" value="1" />
-          <p id="msg" class="msg" aria-live="polite"></p>
-          <button class="btn-lupa" id="btnBuscar" type="submit">
+          <p id="msg" className="msg" aria-live="polite"></p>
+          <button className="btn-lupa" id="btnBuscar" type="submit">
             <img src="Imagenes/lupa.png" alt="Buscar" />
           </button>
         </div>
       </form>
     </main>
-    <footer class="footer"></footer>
+    <footer className="footer"></footer>
 
-    <dialog id="modal-info" class="modal hidden">
-      <div class="modal-content modal-sm">
-        <p id="modal-info-text" class="modal-msg">Mensaje</p>
-        <button id="modal-info-ok" class="btn primary">Aceptar</button>
+    <dialog id="modal-info" className="modal hidden">
+      <div className="modal-content modal-sm">
+        <p id="modal-info-text" className="modal-msg">Mensaje</p>
+        <button id="modal-info-ok" className="btn primary">Aceptar</button>
       </div>
     </dialog>
   </body>

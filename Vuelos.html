@@ -1,3 +1,4 @@
+// --- CONTENIDO DE Vuelos.html (Página Secundaria) ---
 <!DOCTYPE html>
 <html lang="es">
   <head>
@@ -23,19 +24,19 @@
     />
     <link rel="shortcut icon" href="Imagenes/Logo AM.png" type="image/x-icon" />
   </head>
-  <body class="body2" onload="initResultados(); initAuth()">
-    <header class="topbar">
-      <div class="brand">
-        <a href="index.html" class="logo" aria-label="Inicio">
+  <body className="body2" onload="initResultados(); initAuth()">
+    <header className="topbar">
+      <div className="brand">
+        <a href="index.html" className="logo" aria-label="Inicio">
           <img src="Imagenes/Logo AM.png" alt="AM Viajes" />
         </a>
       </div>
     </header>
 
-    <main class="container" id="resultados">
-      <div class="info-vuelo" id="info-vuelo"></div>
-      <div class="info-bar orden-bar">
-        <label class="suse-mono" for="ordenar">Ordenar por:</label>
+    <main className="container" id="resultados">
+      <div className="info-vuelo" id="info-vuelo"></div>
+      <div className="info-bar orden-bar">
+        <label className="suse-mono" for="ordenar">Ordenar por:</label>
         <select id="ordenar" onchange="aplicarOrden()">
           <option value="precio-asc">Precio (menor a mayor)</option>
           <option value="precio-desc">Precio (mayor a menor)</option>
@@ -44,7 +45,7 @@
         </select>
       </div>
 
-      <div class="lista-vuelos" id="lista-vuelos"></div>
+      <div className="lista-vuelos" id="lista-vuelos"></div>
     </main>
   </body>
 </html>

@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "dev": "cd Proyecto2025-Trucco_Albizu && npm run dev"
+  },
+  "dependencies": {
+    "react-router-dom": "^7.9.5"
+  }
+}
