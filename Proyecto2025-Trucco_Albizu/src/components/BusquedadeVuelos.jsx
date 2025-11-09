@@ -18,6 +18,7 @@ function FlightSearch({ showInfoModal }) {
     const [message, setMessage] = useState('');
 
     const totalPasajeros = pasajeros.adultos + pasajeros.ninos + pasajeros.bebes;
+    const MAX_PASAJEROS = 10;
 
     
     const handleTogglePasajeros = () => {
@@ -28,14 +29,30 @@ function FlightSearch({ showInfoModal }) {
         setIsDropdownOpen(false);
     };
 
-   const updatePassengerCount = (type, delta) => {
+    const updatePassengerCount = (type, delta, showInfoModal) => {
         setPasajeros(prev => {
             const newValue = prev[type] + delta;
             const minAdultos = type === 'adultos' ? 1 : 0;
-            if (newValue >= minAdultos) {
-                return { ...prev, [type]: newValue };
+            
+            // Validar mínimo (al menos 1 adulto)
+            if (newValue < minAdultos) {
+                return prev;
             }
-            return prev;
+            
+            // Calcular el nuevo total de pasajeros
+            const nuevoTotal = (type === 'adultos' ? newValue : prev.adultos) +
+                             (type === 'ninos' ? newValue : prev.ninos) +
+                             (type === 'bebes' ? newValue : prev.bebes);
+            
+            // Validar máximo de 10 pasajeros
+            if (delta > 0 && nuevoTotal > MAX_PASAJEROS) {
+                if (showInfoModal) {
+                    showInfoModal(`El número máximo de pasajeros es ${MAX_PASAJEROS}.`);
+                }
+                return prev;
+            }
+            
+            return { ...prev, [type]: newValue };
         });
     };
 
@@ -70,6 +87,11 @@ const handleSwapClick = () => {
 
         if (!soloIda && fechaVuelta && new Date(fechaVuelta) < new Date(fechaIda)) {
             setMessage("La fecha de vuelta debe ser posterior a la fecha de ida.");
+            return;
+        }
+
+        if (totalPasajeros > MAX_PASAJEROS) {
+            setMessage(`El número máximo de pasajeros es ${MAX_PASAJEROS}.`);
             return;
         }
 
@@ -161,29 +183,50 @@ const handleSwapClick = () => {
                         <div className="passenger-group">
                             <span>Adultos <br /><small>(&gt; 12 años)</small></span>
                             <div className="counter">
-                                <button type="button" className="minus" onClick={() => updatePassengerCount('adultos', -1)}>-</button>
+                                <button type="button" className="minus" onClick={() => updatePassengerCount('adultos', -1, showInfoModal)}>-</button>
                                 <span className="value" id="adultos" data-min="1">{pasajeros.adultos}</span>
-                                <button type="button" className="plus" onClick={() => updatePassengerCount('adultos', 1)}>+</button>
+                                <button 
+                                    type="button" 
+                                    className="plus" 
+                                    onClick={() => updatePassengerCount('adultos', 1, showInfoModal)}
+                                    disabled={totalPasajeros >= MAX_PASAJEROS}
+                                >+</button>
                             </div>
                         </div>
 
                         <div className="passenger-group">
                             <span>Niños<br /><small>(2-11 años)</small></span>
                             <div className="counter">
-                                <button type="button" className="minus" onClick={() => updatePassengerCount('ninos', -1)}>-</button>
+                                <button type="button" className="minus" onClick={() => updatePassengerCount('ninos', -1, showInfoModal)}>-</button>
                                 <span className="value" id="ninos" data-min="0">{pasajeros.ninos}</span>
-                                <button type="button" className="plus" onClick={() => updatePassengerCount('ninos', 1)}>+</button>
+                                <button 
+                                    type="button" 
+                                    className="plus" 
+                                    onClick={() => updatePassengerCount('ninos', 1, showInfoModal)}
+                                    disabled={totalPasajeros >= MAX_PASAJEROS}
+                                >+</button>
                             </div>
                         </div>
                         
                         <div className="passenger-group">
                             <span>Bebés <br /><small>(&lt; 2 años)</small></span>
                             <div className="counter">
-                                <button type="button" className="minus" onClick={() => updatePassengerCount('bebes', -1)}>-</button>
+                                <button type="button" className="minus" onClick={() => updatePassengerCount('bebes', -1, showInfoModal)}>-</button>
                                 <span className="value" id="bebes" data-min="0">{pasajeros.bebes}</span>
-                                <button type="button" className="plus" onClick={() => updatePassengerCount('bebes', 1)}>+</button>
+                                <button 
+                                    type="button" 
+                                    className="plus" 
+                                    onClick={() => updatePassengerCount('bebes', 1, showInfoModal)}
+                                    disabled={totalPasajeros >= MAX_PASAJEROS}
+                                >+</button>
                             </div>
                         </div>
+                        
+                        {totalPasajeros >= MAX_PASAJEROS && (
+                            <p style={{ color: '#d32f2f', fontSize: '12px', margin: '8px 0 0', textAlign: 'center' }}>
+                                Máximo {MAX_PASAJEROS} pasajeros
+                            </p>
+                        )}
 
                         <button type="button" id="cerrarDropdown" className="btn" onClick={handleClosePasajeros}>
                             Aceptar
