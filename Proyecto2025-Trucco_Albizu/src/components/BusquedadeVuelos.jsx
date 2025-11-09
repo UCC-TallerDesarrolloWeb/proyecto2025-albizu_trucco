@@ -89,7 +89,7 @@ const handleSwapClick = () => {
 
         localStorage.setItem("busquedaVuelo", JSON.stringify(busqueda));
 
-        // Generar vuelos aleatorios
+     
         const aerolineas = [
             "Aerolíneas Argentinas",
             "LATAM",
@@ -98,7 +98,7 @@ const handleSwapClick = () => {
             "Copa Airlines",
         ];
         const vuelos = [];
-        const cantidadVuelos = Math.floor(Math.random() * 6); // 0..5
+        const cantidadVuelos = Math.floor(Math.random() * 6); 
 
         for (let i = 0; i < cantidadVuelos; i++) {
             const aerolinea = aerolineas[Math.floor(Math.random() * aerolineas.length)];
@@ -200,7 +200,7 @@ const handleSwapClick = () => {
                         value={origen}
                         onChange={(e) => {
                             setOrigen(e.target.value);
-                            setDestino(''); // Reset destino cuando cambia origen
+                            setDestino(''); 
                         }}
                     >
                         <option value="" disabled>Seleccionar...</option>
@@ -258,7 +258,7 @@ const handleSwapClick = () => {
                         type="date"
                         required
                         value={fechaIda}
-                        onChange={(e) => setFechaIda(e.target.value)} // Reemplaza onFechaIdaChange()
+                        onChange={(e) => setFechaIda(e.target.value)} 
                     />
                 </div>
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../utils/authlogicas';
+import { useAuth, soloLetras } from '../utils/authlogicas';
 
 /**
  * Componente dinámico para los modales de Iniciar Sesión y Registrar Usuario.
@@ -18,6 +18,17 @@ function AuthModal({ type, onClose, showInfoModal }) {
     const onClearFields = () => {
         setUsuario('');
         setClave('');
+    };
+
+    const handleUsuarioChange = (e) => {
+        const valor = e.target.value;
+        if (type === 'register') {
+            if (soloLetras(valor)) {
+                setUsuario(valor);
+            }
+        } else {
+            setUsuario(valor);
+        }
     };
 
     const handleSubmit = () => {
@@ -49,7 +60,7 @@ function AuthModal({ type, onClose, showInfoModal }) {
                     size="20"
                     maxLength="30"
                     value={usuario}
-                    onChange={(e) => setUsuario(e.target.value)}
+                    onChange={handleUsuarioChange}
                 />
 
                 <label htmlFor={`${idPrefix}-clave`}>Contraseña</label>
