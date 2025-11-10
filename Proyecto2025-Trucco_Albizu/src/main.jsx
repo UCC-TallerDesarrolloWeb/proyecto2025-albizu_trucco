@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from '@components/authlogicas.jsx';
 import '@styles/_globals.scss';
 import '@styles/_responsive.scss';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <BrowserRouter>
