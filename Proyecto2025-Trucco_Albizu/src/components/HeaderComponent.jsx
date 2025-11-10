@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from './authlogicas'; 
 import AuthModal from './Authmodal'; 
+import Button from '@components/componente generico/Button';
 import profileImg from '@assets/Perfil.png'; 
 import logoImg from '@assets/Logo AM.png'; 
 import { Link } from 'react-router-dom';
@@ -17,7 +18,7 @@ function HeaderComponent({ showInfoModal }) {
         openRegister, 
         closeRegister, 
         logout 
-    } = useAuth(showInfoModal); 
+    } = useAuth(); 
 
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     
@@ -50,12 +51,12 @@ function HeaderComponent({ showInfoModal }) {
             <nav className="auth">
                 {!isLoggedIn ? (
                     <>
-                        <button id="btnAbrirLogin" className="btn ghost" onClick={openLogin}>
+                        <Button id="btnAbrirLogin" variant="ghost" onClick={openLogin}>
                             Iniciar sesión
-                        </button>
-                        <button id="btnAbrirRegistro" className="btn" onClick={openRegister}>
+                        </Button>
+                        <Button id="btnAbrirRegistro" onClick={openRegister}>
                             Registrarse
-                        </button>
+                        </Button>
                     </>
                 ) : (
                     <div className="perfil-menu" id="perfilMenu">
@@ -70,13 +71,13 @@ function HeaderComponent({ showInfoModal }) {
                                 id="perfilDropdown" 
                                 className={`perfil-dropdown ${isProfileDropdownOpen ? '' : 'hidden'}`}
                             >
-                                <button
+                                <Button
                                     id="btnCerrarSesion"
-                                    className="btn ghost"
+                                    variant="ghost"
                                     onClick={handleLogout}
                                 >
                                     Cerrar sesión ({sessionUser})
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     </div>

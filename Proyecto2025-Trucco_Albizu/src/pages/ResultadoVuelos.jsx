@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { getSorted, fmtUSD } from '@components/Vueloutils';
+import Button from '@components/componente generico/Button';
 import logoImg from '@assets/Logo AM.png'; 
 
 const FlightCard = ({ vuelo, onSelect }) => {
@@ -29,12 +30,12 @@ const FlightCard = ({ vuelo, onSelect }) => {
             <hr className="separador" />
             <div className="fila-precio">
             <strong>Precio total: {fmtUSD.format(precioTotal)}</strong>
-                <button 
-                    className="btn primary" 
+                <Button 
+                    variant="primary"
                     onClick={() => onSelect(vuelo)}
                 >
                     Seleccionar
-                </button>
+                </Button>
             </div>
         </div>
     );

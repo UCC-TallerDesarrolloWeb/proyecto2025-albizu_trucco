@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { useAuth, soloLetras } from './authlogicas';
+import { useAuth } from './authlogicas';
+import { soloLetras } from '@utils/validators';
+import Button from '@components/componente generico/Button';
 
 /**
  * Componente dinámico para los modales de Iniciar Sesión y Registrar Usuario.
@@ -10,7 +12,7 @@ import { useAuth, soloLetras } from './authlogicas';
  * @param {function} showInfoModal - Función para mostrar diálogos de info/error
  */
 function AuthModal({ type, onClose, showInfoModal }) {
-     const { confirmLogin, confirmRegister } = useAuth(showInfoModal);
+     const { confirmLogin, confirmRegister } = useAuth();
 
     const [usuario, setUsuario] = useState('');
     const [clave, setClave] = useState('');
@@ -33,9 +35,9 @@ function AuthModal({ type, onClose, showInfoModal }) {
 
     const handleSubmit = () => {
         if (type === 'login') {
-            confirmLogin(usuario, clave, onClearFields);
+            confirmLogin(usuario, clave, onClearFields, showInfoModal);
         } else {
-            confirmRegister(usuario, clave, onClearFields);
+            confirmRegister(usuario, clave, onClearFields, showInfoModal);
         }
     };
 
@@ -74,21 +76,21 @@ function AuthModal({ type, onClose, showInfoModal }) {
                     onChange={(e) => setClave(e.target.value)}
                 />
                 
-                <button
+                <Button
                     id={confirmButtonId}
-                    className="btn primary"
+                    variant="primary"
                     onClick={handleSubmit}
                 >
                     {confirmButtonText}
-                </button>
+                </Button>
                 
-                <button 
+                <Button 
                     id={closeButtonId} 
-                    className="btn ghost" 
+                    variant="ghost" 
                     onClick={onClose}
                 >
                     Cerrar
-                </button>
+                </Button>
             </div>
         </div>
     );

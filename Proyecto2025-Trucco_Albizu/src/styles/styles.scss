@@ -82,7 +82,7 @@ body, html {
 .search-card {
   display: grid;
   grid-template-columns:
-    minmax(110px, 0.6fr)   /* Pasajeros */
+    minmax(180px, 0.9fr)   /* Pasajeros */
     minmax(260px, 1.3fr)   /* Origen */
     minmax(60px, 0.2fr)    /* Swap */
     minmax(260px, 1.3fr)   /* Destino */
@@ -118,29 +118,14 @@ body, html {
 
   .autocomplete__input {
     width: 100%;
+    display: block;
     padding: 12px 14px;
     border: 1px solid var(--negro);
     border-radius: 10px;
     font-size: 15px;
     background-color: #fff;
-  }
-
-  .autocomplete__toggle {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: 18px;
-    color: var(--gris-oscuro);
-    padding: 4px;
-
-    &:disabled {
-      cursor: not-allowed;
-      color: var(--gris-claro);
-    }
+    height: 48px;
+    box-sizing: border-box;
   }
 
   .autocomplete__list {
@@ -237,13 +222,18 @@ body, html {
 .swap {
   align-self: end;
   justify-self: center;
-  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
   border: 1px solid var(--gris-oscuro);
   background: #fff;
   border-radius: 10px;
   cursor: pointer;
-  margin-top: 22px;
+  margin-top: 0;
   min-width: 52px;
+  height: 48px;
+  box-sizing: border-box;
 }
 
 .field--solo-ida {
@@ -268,9 +258,14 @@ body, html {
   flex-direction: column;
   gap: 6px;
   input, select{
-    padding: 10px;
+    display: block;
+    padding: 12px 14px;
     border: 1px solid var(--negro);
     border-radius: 10px;
+    height: 48px;
+    box-sizing: border-box;
+    font-size: 15px;
+    background: #fff;
   }
 }
 
@@ -604,6 +599,47 @@ body, html {
   position: relative;
   z-index: 5;
   width: 100%;
+
+  .select-display {
+    display: block;
+    padding: 12px 14px;
+    border: 1px solid var(--negro);
+    border-radius: 10px;
+    height: 48px;
+    font-size: 15px;
+    background: #fff;
+    color: var(--negro);
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus,
+    &:hover {
+      border-color: var(--azul);
+      box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.15);
+      outline: none;
+    }
+  }
+
+  .dropdown {
+    padding: 16px;
+  }
+
+  .dropdown:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .passenger-group {
+    span {
+      font-size: 14px;
+      line-height: 1.2;
+    }
+  }
+
+  .btn {
+    align-self: flex-end;
+  }
 }
 
 .info-bar {

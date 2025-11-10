@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { horaRandom, precioBasePara } from './Vueloutils';
 import { getAeropuertos } from '@api/apiService.js';
 import lupaImg from '@assets/lupa.png';
+import Button from '@components/componente generico/Button';
 
 const initialPassengers = { adultos: 1, ninos: 0, bebes: 0 };
 const MAX_PASAJEROS = 10;
@@ -76,6 +77,7 @@ function FlightSearch({ showInfoModal }) {
 
     const origenDropdownTimeout = useRef(null);
     const destinoDropdownTimeout = useRef(null);
+    const passengerRef = useRef(null);
 
     const clearTimeoutRef = (ref) => {
         if (ref.current) {
@@ -116,6 +118,21 @@ function FlightSearch({ showInfoModal }) {
     useEffect(() => {
         setFilteredDestino(filterAeropuertosList(aeropuertos, searchDestino, selectedOrigen?.id ?? null));
     }, [aeropuertos, searchDestino, selectedOrigen]);
+
+    useEffect(() => {
+        if (!isDropdownOpen) return;
+
+        const handleClickOutside = (event) => {
+            if (passengerRef.current && !passengerRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isDropdownOpen]);
 
     const handleOrigenInputChange = (value) => {
         setSearchOrigen(value);
@@ -162,29 +179,8 @@ function FlightSearch({ showInfoModal }) {
         setMessage('');
     };
 
-    const handleToggleOrigen = () => {
-        setDropdownOrigenOpen((prev) => {
-            const next = !prev;
-            if (next) {
-                setFilteredOrigen(filterAeropuertosList(aeropuertos, searchOrigen, null));
-            }
-            return next;
-        });
-    };
-
-    const handleToggleDestino = () => {
-        setDropdownDestinoOpen((prev) => {
-            const next = !prev;
-            if (next) {
-                setFilteredDestino(filterAeropuertosList(aeropuertos, searchDestino, selectedOrigen?.id ?? null));
-            }
-            return next;
-        });
-    };
-
-    
     const handleTogglePasajeros = () => {
-        setIsDropdownOpen(!isDropdownOpen);
+        setIsDropdownOpen((prev) => !prev);
     };
 
     const handleClosePasajeros = () => {
@@ -357,7 +353,7 @@ function FlightSearch({ showInfoModal }) {
             onSubmit={handleSearchSubmit} 
         >
             <div className="search-card">
-                <div className="field passenger-select">
+                <div className="field passenger-select" ref={passengerRef}>
                     <label className="suse-mono pasajeros" htmlFor="pasajeros-display">Pasajeros</label>
                     <input
                         id="pasajeros-display"
@@ -426,9 +422,9 @@ function FlightSearch({ showInfoModal }) {
                             </p>
                         )}
 
-                        <button type="button" id="cerrarDropdown" className="btn" onClick={handleClosePasajeros}>
+                        <Button type="button" id="cerrarDropdown" onClick={handleClosePasajeros}>
                             Aceptar
-                        </button>
+                        </Button>
                     </div>
                 </div>
                 <div className="field autocomplete">
@@ -450,15 +446,6 @@ function FlightSearch({ showInfoModal }) {
                             disabled={loading}
                             autoComplete="off"
                         />
-                        <button
-                            type="button"
-                            className="autocomplete__toggle"
-                            onMouseDown={(e) => e.preventDefault()}
-                            onClick={handleToggleOrigen}
-                            aria-label="Mostrar opciones de aeropuertos de origen"
-                        >
-                            ⌄
-                        </button>
                         <ul className={`autocomplete__list ${dropdownOrigenOpen && !loading ? '' : 'hidden'}`}>
                             {loading && (
                                 <li className="autocomplete__empty">Cargando aeropuertos...</li>
@@ -514,16 +501,6 @@ function FlightSearch({ showInfoModal }) {
                             disabled={loading || !selectedOrigen}
                             autoComplete="off"
                         />
-                        <button
-                            type="button"
-                            className="autocomplete__toggle"
-                            onMouseDown={(e) => e.preventDefault()}
-                            onClick={handleToggleDestino}
-                            aria-label="Mostrar opciones de aeropuertos de destino"
-                            disabled={loading || !selectedOrigen}
-                        >
-                            ⌄
-                        </button>
                         <ul className={`autocomplete__list ${dropdownDestinoOpen && !loading && selectedOrigen ? '' : 'hidden'}`}>
                             {!selectedOrigen && !loading && (
                                 <li className="autocomplete__empty">Seleccioná primero un aeropuerto de origen</li>
@@ -575,7 +552,7 @@ function FlightSearch({ showInfoModal }) {
                     />
                 </div>
 
-                <div className="field" id="groupVuelta" style={{ display: soloIda ? 'none' : 'block' }}>
+                <div className={`field ${soloIda ? 'hidden' : ''}`} id="groupVuelta">
                     <label className="suse-mono fechaVuelta" htmlFor="fechaVuelta">Fecha vuelta</label>
                     <input 
                         id="fechaVuelta" 

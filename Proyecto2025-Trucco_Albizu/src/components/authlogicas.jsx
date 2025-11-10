@@ -1,32 +1,9 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useState, useEffect, useCallback, createContext, useContext } from 'react';
+import { soloLetras } from '@utils/validators';
 
 const getUsers = () => JSON.parse(localStorage.getItem("usuarios") || "[]");
 const saveUsers = (users) => localStorage.setItem("usuarios", JSON.stringify(users));
-
-
-export const soloLetras = (texto) => {
-    if (!texto || texto.length === 0) {
-        return true; 
-    }
-    
-    const letrasPermitidas = [
-        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-        'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-        'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-        'á', 'é', 'í', 'ó', 'ú', 'Á', 'É', 'Í', 'Ó', 'Ú',
-        'ñ', 'Ñ'
-    ];
-    
-    for (let i = 0; i < texto.length; i++) {
-        const caracter = texto[i];
-        if (!letrasPermitidas.includes(caracter)) {
-            return false;
-        }
-    }
-    
-    return true;
-};
 
 const AuthContext = createContext(null);
 
@@ -151,23 +128,11 @@ export const AuthProvider = ({ children }) => {
  * Custom Hook para acceder al contexto de autenticación
  * @param {function} showInfoModal - Función para mostrar diálogos (reemplazo de dialogo/alert).
  */
-export const useAuth = (showInfoModal) => {
+export function useAuth() {
     const context = useContext(AuthContext);
     if (!context) {
         throw new Error('useAuth debe ser usado dentro de un AuthProvider');
     }
 
-    const confirmLoginWithModal = useCallback((usuario, clave, onClearFields) => {
-        return context.confirmLogin(usuario, clave, onClearFields, showInfoModal);
-    }, [context, showInfoModal]);
-
-    const confirmRegisterWithModal = useCallback((usuario, clave, onClearFields) => {
-        return context.confirmRegister(usuario, clave, onClearFields, showInfoModal);
-    }, [context, showInfoModal]);
-
-    return {
-        ...context,
-        confirmLogin: confirmLoginWithModal,
-        confirmRegister: confirmRegisterWithModal,
-    };
-};
+    return context;
+}
