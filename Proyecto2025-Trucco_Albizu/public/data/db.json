@@ -1,0 +1,89 @@
+{
+  "aeropuertos": [
+    {
+      "id": "1",
+      "name": "Aeropuerto Internacional Ministro Pistarini",
+      "city": "Buenos Aires",
+      "Country": "Argentina",
+      "IATA": "EZE"
+    },
+    {
+      "id": "2",
+      "name": "Aeroparque Jorge Newbery",
+      "city": "Buenos Aires",
+      "Country": "Argentina",
+      "IATA": "AEP"
+    },
+    {
+      "id": "3",
+      "name": "Aeropuerto Internacional de Córdoba Ingeniero Aeronáutico Ambrosio Taravella",
+      "city": "Córdoba",
+      "Country": "Argentina",
+      "IATA": "COR"
+    },
+    {
+      "id": "4",
+      "name": "Miami International Airport",
+      "city": "Miami",
+      "Country": "Estados Unidos",
+      "IATA": "MIA"
+    },
+    {
+      "id": "5",
+      "name": "Adolfo Suárez Madrid-Barajas",
+      "city": "Madrid",
+      "Country": "España",
+      "IATA": "MAD"
+    },
+    {
+      "id": "6",
+      "name": "John F. Kennedy International Airport",
+      "city": "Nueva York",
+      "Country": "Estados Unidos",
+      "IATA": "JFK"
+    },
+    {
+      "id": "7",
+      "name": "Aeropuerto Internacional Leonardo da Vinc",
+      "city": "Roma",
+      "Country": "Italia",
+      "IATA": "FCO"
+    },
+    {
+      "id": "8",
+      "name": "Aeropuerto Internacional de Narita Jasiko",
+      "city": "Tokio",
+      "Country": "Japon",
+      "IATA": "NRT"
+    },
+    {
+      "id": "9",
+      "name": "Aeropuerto Internacional de São Paulo, Governador André Franco Montoro",
+      "city": "Sao Paulo",
+      "Country": "Brasil",
+      "IATA": "GRU"
+    },
+    {
+      "id": "10",
+      "name": "Aeropuerto de París, Le Bourget",
+      "city": "Paris",
+      "Country": "Francia",
+      "IATA": "LBG"
+    },
+    {
+      "id": "11",
+      "name": "Aeropuerto Internacional de Camberra",
+      "city": "Camberra",
+      "Country": "Australia",
+      "IATA": "CBR"
+    },
+    {
+      "id": "12",
+      "name": "Aeropuerto Internacional de Ciudad del Cabo",
+      "city": "Ciudad del cabo",
+      "Country": "Sudafrica",
+      "IATA": "CPT"
+    }
+  ]
+}
+

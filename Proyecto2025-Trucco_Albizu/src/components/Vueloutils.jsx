@@ -1,5 +1,5 @@
 
-export const CIUDADES = ["Córdoba", "Buenos Aires", "Miami", "Madrid"];
+// CIUDADES ya no se usa, se cargan desde db.json
 
 
 export const fmtUSD = new Intl.NumberFormat("es-AR", {
@@ -24,26 +24,7 @@ export const toMinutes = (hhmm) => {
 };
 
 
-export const allowedDestinos = (origen) => {
-    if (!origen) return CIUDADES.slice();
-    if (origen === "Córdoba") return ["Buenos Aires"];
-    if (origen === "Buenos Aires")
-        return CIUDADES.filter((c) => c !== "Buenos Aires");
-    if (origen === "Miami" || origen === "Madrid")
-        return CIUDADES.filter((c) => c !== "Córdoba" && c !== origen);
-    return CIUDADES.slice();
-};
-
-
-export const allowedOrigens = (destino) => {
-    if (!destino) return CIUDADES.slice();
-    if (destino === "Córdoba") return ["Buenos Aires"];
-    if (destino === "Buenos Aires")
-        return CIUDADES.filter((c) => c !== "Buenos Aires");
-    if (destino === "Miami" || destino === "Madrid")
-        return CIUDADES.filter((c) => c !== "Córdoba" && c !== destino);
-    return CIUDADES.slice();
-};
+// allowedDestinos y allowedOrigens ya no se usan, se manejan en el componente con filtrado por país
 
 
 export const horaRandom = () => {
@@ -52,12 +33,24 @@ export const horaRandom = () => {
     return `${h}:${m}`;
 };
 
+/**
+ * Calcula el precio base para una ruta entre origen y destino
+ * @param {string} origen - Ciudad de origen
+ * @param {string} destino - Ciudad de destino
+ * @returns {number} Precio base aleatorio
+ */
 export const precioBasePara = (origen, destino) => {
-    const esCbba =
-        (origen === "Córdoba" && destino === "Buenos Aires") ||
-        (origen === "Buenos Aires" && destino === "Córdoba");
-    if (esCbba) return Math.floor(Math.random() * 81) + 20; 
-    return Math.floor(Math.random() * 601) + 300; 
+    // Rutas domésticas en Argentina (más baratas)
+    const ciudadesArgentina = ["Córdoba", "Buenos Aires"];
+    const esRutaDomesticaArgentina = 
+        ciudadesArgentina.includes(origen) && ciudadesArgentina.includes(destino);
+    
+    if (esRutaDomesticaArgentina) {
+        return Math.floor(Math.random() * 81) + 20; // $20 - $100
+    }
+    
+    // Rutas internacionales (más caras)
+    return Math.floor(Math.random() * 601) + 300; // $300 - $900
 };
 
 

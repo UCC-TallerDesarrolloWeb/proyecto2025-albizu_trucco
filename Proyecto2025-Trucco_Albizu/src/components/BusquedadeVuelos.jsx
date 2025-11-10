@@ -1,9 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CIUDADES, horaRandom, precioBasePara, allowedDestinos } from './Vueloutils';
+import { horaRandom, precioBasePara } from './Vueloutils';
+import { getAeropuertos } from '../services/apiService';
 import lupaImg from '@assets/lupa.png';
 
 const initialPassengers = { adultos: 1, ninos: 0, bebes: 0 };
+const MAX_PASAJEROS = 10;
+const MAX_AUTOCOMPLETE_RESULTS = 15;
+const MAX_FECHA = '2027-12-31';
+
+const formatAeropuerto = (aeropuerto) => {
+    if (!aeropuerto) return '';
+    const { city, IATA, name, Country } = aeropuerto;
+    return `${city} (${IATA}) – ${name} · ${Country}`;
+};
+
+const normalizeText = (value) => value?.toString().toLowerCase().trim() ?? '';
+
+const filterAeropuertosList = (aeropuertos, query, excludeId) => {
+    if (!Array.isArray(aeropuertos)) return [];
+    const normalizedQuery = normalizeText(query);
+
+    const matches = aeropuertos.filter((a) => {
+        if (excludeId && a.id === excludeId) return false;
+        if (!normalizedQuery) return true;
+        const fields = [
+            normalizeText(a.city),
+            normalizeText(a.name),
+            normalizeText(a.Country),
+            normalizeText(a.IATA),
+        ];
+        return fields.some((field) => field.includes(normalizedQuery));
+    });
+
+    return matches
+        .sort((a, b) => {
+            const cityCompare = a.city.localeCompare(b.city, 'es', { sensitivity: 'base' });
+            if (cityCompare !== 0) return cityCompare;
+            return a.name.localeCompare(b.name, 'es', { sensitivity: 'base' });
+        })
+        .slice(0, MAX_AUTOCOMPLETE_RESULTS);
+};
 
 function FlightSearch({ showInfoModal }) {
     const navigate = useNavigate();
@@ -11,14 +48,135 @@ function FlightSearch({ showInfoModal }) {
     const [pasajeros, setPasajeros] = useState(initialPassengers);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [soloIda, setSoloIda] = useState(false);
-    const [origen, setOrigen] = useState('');
-    const [destino, setDestino] = useState('');
+    const [selectedOrigen, setSelectedOrigen] = useState(null);
+    const [selectedDestino, setSelectedDestino] = useState(null);
+    const [searchOrigen, setSearchOrigen] = useState('');
+    const [searchDestino, setSearchDestino] = useState('');
     const [fechaIda, setFechaIda] = useState('');
     const [fechaVuelta, setFechaVuelta] = useState('');
     const [message, setMessage] = useState('');
+    
+    const [aeropuertos, setAeropuertos] = useState([]);
+    const [filteredOrigen, setFilteredOrigen] = useState([]);
+    const [filteredDestino, setFilteredDestino] = useState([]);
+    const [dropdownOrigenOpen, setDropdownOrigenOpen] = useState(false);
+    const [dropdownDestinoOpen, setDropdownDestinoOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const totalPasajeros = pasajeros.adultos + pasajeros.ninos + pasajeros.bebes;
-    const MAX_PASAJEROS = 10;
+    const origenCiudad = selectedOrigen?.city ?? '';
+    const destinoCiudad = selectedDestino?.city ?? '';
+
+    const origenDropdownTimeout = useRef(null);
+    const destinoDropdownTimeout = useRef(null);
+
+    const clearTimeoutRef = (ref) => {
+        if (ref.current) {
+            clearTimeout(ref.current);
+            ref.current = null;
+        }
+    };
+
+    const closeDropdownWithDelay = (setter, ref) => {
+        clearTimeoutRef(ref);
+        ref.current = setTimeout(() => {
+            setter(false);
+        }, 120);
+    };
+
+    // Cargar aeropuertos al montar el componente
+    useEffect(() => {
+        const cargarDatos = async () => {
+            try {
+                setLoading(true);
+                const aeropuertosData = await getAeropuertos();
+                setAeropuertos(aeropuertosData);
+                setFilteredOrigen(filterAeropuertosList(aeropuertosData, ''));
+                setFilteredDestino(filterAeropuertosList(aeropuertosData, '', null));
+            } catch (error) {
+                console.error('Error al cargar aeropuertos:', error);
+                showInfoModal('Error al cargar los aeropuertos. Por favor, recarga la página.');
+            } finally {
+                setLoading(false);
+            }
+        };
+        cargarDatos();
+    }, [showInfoModal]);
+
+    useEffect(() => {
+        setFilteredOrigen(filterAeropuertosList(aeropuertos, searchOrigen, null));
+    }, [aeropuertos, searchOrigen]);
+
+    useEffect(() => {
+        setFilteredDestino(filterAeropuertosList(aeropuertos, searchDestino, selectedOrigen?.id ?? null));
+    }, [aeropuertos, searchDestino, selectedOrigen]);
+
+    const handleOrigenInputChange = (value) => {
+        setSearchOrigen(value);
+        if (selectedOrigen) {
+            setSelectedOrigen(null);
+            if (selectedDestino) {
+                setSelectedDestino(null);
+                setSearchDestino('');
+            }
+        }
+        setDropdownOrigenOpen(true);
+        setFilteredOrigen(filterAeropuertosList(aeropuertos, value, null));
+    };
+
+    const handleDestinoInputChange = (value) => {
+        setSearchDestino(value);
+        if (selectedDestino) {
+            setSelectedDestino(null);
+        }
+        setDropdownDestinoOpen(true);
+        setFilteredDestino(filterAeropuertosList(aeropuertos, value, selectedOrigen?.id ?? null));
+    };
+
+    const handleSelectOrigen = (aeropuerto) => {
+        clearTimeoutRef(origenDropdownTimeout);
+        setSelectedOrigen(aeropuerto);
+        setSearchOrigen(formatAeropuerto(aeropuerto));
+        setDropdownOrigenOpen(false);
+
+        // Si el destino coincide con el mismo aeropuerto, reiniciar selección
+        if (selectedDestino && selectedDestino.id === aeropuerto.id) {
+            setSelectedDestino(null);
+            setSearchDestino('');
+        }
+
+        // Actualizar lista de destinos excluyendo el seleccionado
+        setFilteredDestino(filterAeropuertosList(aeropuertos, searchDestino, aeropuerto.id));
+        setMessage('');
+    };
+
+    const handleSelectDestino = (aeropuerto) => {
+        clearTimeoutRef(destinoDropdownTimeout);
+        setSelectedDestino(aeropuerto);
+        setSearchDestino(formatAeropuerto(aeropuerto));
+        setDropdownDestinoOpen(false);
+        setMessage('');
+    };
+
+    const handleToggleOrigen = () => {
+        setDropdownOrigenOpen((prev) => {
+            const next = !prev;
+            if (next) {
+                setFilteredOrigen(filterAeropuertosList(aeropuertos, searchOrigen, null));
+            }
+            return next;
+        });
+    };
+
+    const handleToggleDestino = () => {
+        setDropdownDestinoOpen((prev) => {
+            const next = !prev;
+            if (next) {
+                setFilteredDestino(filterAeropuertosList(aeropuertos, searchDestino, selectedOrigen?.id ?? null));
+            }
+            return next;
+        });
+    };
 
     
     const handleTogglePasajeros = () => {
@@ -62,9 +220,22 @@ function FlightSearch({ showInfoModal }) {
              setFechaVuelta('');
         }
     };
-const handleSwapClick = () => {
-        setOrigen(destino);
-        setDestino(origen);
+    const handleSwapClick = () => {
+        if (!selectedOrigen && !selectedDestino && !searchOrigen && !searchDestino) {
+            return;
+        }
+
+        const nuevoOrigen = selectedDestino || null;
+        const nuevoDestino = selectedOrigen || null;
+        const nuevoSearchOrigen = selectedDestino ? formatAeropuerto(selectedDestino) : searchDestino;
+        const nuevoSearchDestino = selectedOrigen ? formatAeropuerto(selectedOrigen) : searchOrigen;
+
+        setSelectedOrigen(nuevoOrigen);
+        setSelectedDestino(nuevoDestino);
+        setSearchOrigen(nuevoSearchOrigen || '');
+        setSearchDestino(nuevoSearchDestino || '');
+        setDropdownOrigenOpen(false);
+        setDropdownDestinoOpen(false);
     };
 
     const handleSearchSubmit = (e) => {
@@ -75,13 +246,28 @@ const handleSwapClick = () => {
             return;
         }
 
-        if (!origen || !destino || !fechaIda || (!soloIda && !fechaVuelta)) {
+        if (!selectedOrigen || !selectedDestino) {
+            setMessage("Seleccioná un aeropuerto de origen y otro de destino de la lista.");
+            return;
+        }
+
+        if (!fechaIda || (!soloIda && !fechaVuelta)) {
             setMessage("Por favor, completa todos los campos requeridos.");
             return;
         }
 
-        if (origen === destino) {
+        if (selectedOrigen.id === selectedDestino.id) {
             setMessage("El origen y el destino no pueden ser iguales.");
+            return;
+        }
+
+        if (new Date(fechaIda) > new Date(MAX_FECHA)) {
+            setMessage('La fecha de ida no puede superar el año 2027.');
+            return;
+        }
+
+        if (!soloIda && fechaVuelta && new Date(fechaVuelta) > new Date(MAX_FECHA)) {
+            setMessage('La fecha de vuelta no puede superar el año 2027.');
             return;
         }
 
@@ -96,10 +282,19 @@ const handleSwapClick = () => {
         }
 
         setMessage('');
+
+        const origenDisplay = formatAeropuerto(selectedOrigen);
+        const destinoDisplay = formatAeropuerto(selectedDestino);
         
         const busqueda = {
-            origen,
-            destino,
+            origen: origenDisplay,
+            destino: destinoDisplay,
+            origenCiudad: selectedOrigen.city,
+            origenPais: selectedOrigen.Country,
+            origenIATA: selectedOrigen.IATA,
+            destinoCiudad: selectedDestino.city,
+            destinoPais: selectedDestino.Country,
+            destinoIATA: selectedDestino.IATA,
             fechaIda,
             fechaVuelta: soloIda ? null : fechaVuelta,
             soloIda,
@@ -125,7 +320,7 @@ const handleSwapClick = () => {
         for (let i = 0; i < cantidadVuelos; i++) {
             const aerolinea = aerolineas[Math.floor(Math.random() * aerolineas.length)];
             const horaSalida = horaRandom();
-            const precioBase = precioBasePara(origen, destino);
+            const precioBase = precioBasePara(origenCiudad, destinoCiudad);
             const esIdaYVuelta = !soloIda;
             const horaVuelta = esIdaYVuelta ? horaRandom() : null;
             const precioPorPasajero = esIdaYVuelta ? precioBase * 2 : precioBase;
@@ -133,8 +328,10 @@ const handleSwapClick = () => {
 
             vuelos.push({
                 aerolinea,
-                origen,
-                destino,
+                origen: origenDisplay,
+                destino: destinoDisplay,
+                origenIATA: selectedOrigen.IATA,
+                destinoIATA: selectedDestino.IATA,
                 fechaIda,
                 horaSalida,
                 esIdaYVuelta,
@@ -233,24 +430,57 @@ const handleSwapClick = () => {
                         </button>
                     </div>
                 </div>
-
-                 <div className="field">
-                    <label className="suse-mono origen" htmlFor="origen">Origen</label>
-                    <select
-                        id="origen"
-                        name="origen"
-                        required
-                        value={origen}
-                        onChange={(e) => {
-                            setOrigen(e.target.value);
-                            setDestino(''); 
-                        }}
-                    >
-                        <option value="" disabled>Seleccionar...</option>
-                        {CIUDADES.map((ciudad) => (
-                            <option key={ciudad} value={ciudad}>{ciudad}</option>
-                        ))}
-                    </select>
+                <div className="field autocomplete">
+                    <label className="suse-mono origen" htmlFor="autocomplete-origen">Aeropuerto Origen</label>
+                    <div className={`autocomplete__wrapper ${dropdownOrigenOpen ? 'open' : ''}`}>
+                        <input
+                            id="autocomplete-origen"
+                            type="text"
+                            className="autocomplete__input"
+                            placeholder={loading ? 'Cargando aeropuertos...' : 'Escribí ciudad, país o código IATA'}
+                            value={searchOrigen}
+                            onChange={(e) => handleOrigenInputChange(e.target.value)}
+                            onFocus={() => {
+                                clearTimeoutRef(origenDropdownTimeout);
+                                setDropdownOrigenOpen(true);
+                                setFilteredOrigen(filterAeropuertosList(aeropuertos, searchOrigen, null));
+                            }}
+                            onBlur={() => closeDropdownWithDelay(setDropdownOrigenOpen, origenDropdownTimeout)}
+                            disabled={loading}
+                            autoComplete="off"
+                        />
+                        <button
+                            type="button"
+                            className="autocomplete__toggle"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={handleToggleOrigen}
+                            aria-label="Mostrar opciones de aeropuertos de origen"
+                        >
+                            ⌄
+                        </button>
+                        <ul className={`autocomplete__list ${dropdownOrigenOpen && !loading ? '' : 'hidden'}`}>
+                            {loading && (
+                                <li className="autocomplete__empty">Cargando aeropuertos...</li>
+                            )}
+                            {!loading && filteredOrigen.length === 0 && (
+                                <li className="autocomplete__empty">Sin resultados</li>
+                            )}
+                            {!loading && filteredOrigen.map((aeropuerto) => (
+                                <li key={aeropuerto.id} className="autocomplete__option">
+                                    <button
+                                        type="button"
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        onClick={() => handleSelectOrigen(aeropuerto)}
+                                    >
+                                        {aeropuerto.city} ({aeropuerto.IATA})
+                                        <span className="autocomplete__meta">
+                                            {aeropuerto.name} · {aeropuerto.Country}
+                                        </span>
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
 
                 <button
@@ -264,21 +494,58 @@ const handleSwapClick = () => {
                     ⇄
                 </button>
 
-                <div className="field">
-                    <label className="suse-mono destino" htmlFor="destino">Destino</label>
-                    <select
-                        id="destino"
-                        name="destino"
-                        required
-                        value={destino}
-                        onChange={(e) => setDestino(e.target.value)}
-                        disabled={!origen}
-                    >
-                        <option value="" disabled>Seleccionar...</option>
-                        {allowedDestinos(origen).map((ciudad) => (
-                            <option key={ciudad} value={ciudad}>{ciudad}</option>
-                        ))}
-                    </select>
+                <div className="field autocomplete">
+                    <label className="suse-mono destino" htmlFor="autocomplete-destino">Aeropuerto Destino</label>
+                    <div className={`autocomplete__wrapper ${dropdownDestinoOpen ? 'open' : ''}`}>
+                        <input
+                            id="autocomplete-destino"
+                            type="text"
+                            className="autocomplete__input"
+                            placeholder={loading ? 'Cargando aeropuertos...' : 'Escribí ciudad, país o código IATA'}
+                            value={searchDestino}
+                            onChange={(e) => handleDestinoInputChange(e.target.value)}
+                            onFocus={() => {
+                                clearTimeoutRef(destinoDropdownTimeout);
+                                setDropdownDestinoOpen(true);
+                                setFilteredDestino(filterAeropuertosList(aeropuertos, searchDestino, selectedOrigen?.id ?? null));
+                            }}
+                            onBlur={() => closeDropdownWithDelay(setDropdownDestinoOpen, destinoDropdownTimeout)}
+                            disabled={loading || !selectedOrigen}
+                            autoComplete="off"
+                        />
+                        <button
+                            type="button"
+                            className="autocomplete__toggle"
+                            onMouseDown={(e) => e.preventDefault()}
+                            onClick={handleToggleDestino}
+                            aria-label="Mostrar opciones de aeropuertos de destino"
+                            disabled={loading || !selectedOrigen}
+                        >
+                            ⌄
+                        </button>
+                        <ul className={`autocomplete__list ${dropdownDestinoOpen && !loading && selectedOrigen ? '' : 'hidden'}`}>
+                            {!selectedOrigen && !loading && (
+                                <li className="autocomplete__empty">Seleccioná primero un aeropuerto de origen</li>
+                            )}
+                            {selectedOrigen && !loading && filteredDestino.length === 0 && (
+                                <li className="autocomplete__empty">Sin resultados</li>
+                            )}
+                            {selectedOrigen && !loading && filteredDestino.map((aeropuerto) => (
+                                <li key={aeropuerto.id} className="autocomplete__option">
+                                    <button
+                                        type="button"
+                                        onMouseDown={(e) => e.preventDefault()}
+                                        onClick={() => handleSelectDestino(aeropuerto)}
+                                    >
+                                        {aeropuerto.city} ({aeropuerto.IATA})
+                                        <span className="autocomplete__meta">
+                                            {aeropuerto.name} · {aeropuerto.Country}
+                                        </span>
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
 
                 
@@ -301,6 +568,7 @@ const handleSwapClick = () => {
                         type="date"
                         required
                         value={fechaIda}
+                        max={MAX_FECHA}
                         onChange={(e) => setFechaIda(e.target.value)} 
                     />
                 </div>
@@ -312,6 +580,7 @@ const handleSwapClick = () => {
                         name="fechaVuelta" 
                         type="date"
                         value={fechaVuelta}
+                        max={MAX_FECHA}
                         onChange={(e) => setFechaVuelta(e.target.value)}
                         disabled={soloIda}
                     />
