@@ -4,6 +4,7 @@ import { horaRandom, precioBasePara } from './Vueloutils';
 import { getAeropuertos } from '@api/apiService.js';
 import lupaImg from '@assets/lupa.png';
 import Button from '@components/componente generico/Button';
+import '@styles/_search.scss';
 
 const initialPassengers = { adultos: 1, ninos: 0, bebes: 0 };
 const MAX_PASAJEROS = 10;

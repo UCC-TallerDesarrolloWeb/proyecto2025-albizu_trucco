@@ -1,0 +1,44 @@
+:root {
+  --blanco: white;
+  --negro: black;
+  --gris-oscuro: #666;
+  --azul: #0066ff;
+  --gris-claro: #ccc;
+  --radius: 18px;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.suse-mono {
+  font-family: "SUSE Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.btn {
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--gris-claro);
+  background: #fff;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: var(--azul);
+  color: #fff;
+  border-color: var(--azul);
+}
+
+.hidden {
+  display: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+

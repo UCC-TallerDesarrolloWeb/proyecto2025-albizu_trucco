@@ -5,6 +5,8 @@ import Button from '@components/componente generico/Button';
 import profileImg from '@assets/Perfil.png'; 
 import logoImg from '@assets/Logo AM.png'; 
 import { Link } from 'react-router-dom';
+import '@styles/_layout.scss';
+import '@styles/_auth.scss';
 
 
 function HeaderComponent({ showInfoModal }) {

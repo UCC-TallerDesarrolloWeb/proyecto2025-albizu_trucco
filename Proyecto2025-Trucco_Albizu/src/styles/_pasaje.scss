@@ -1,0 +1,85 @@
+.body3 {
+  margin: 0;
+  min-height: 100vh;
+  width: 100%;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Arial;
+  background-image: url("/Imagenes/avion.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: scroll;
+  background-position: center;
+  position: relative;
+}
+
+.topbar3 {
+  text-align: center;
+  padding: 30px;
+  color: var(--blanco);
+}
+
+.logo3 {
+  img {
+    width: 200px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+}
+
+.tarjeta-pasaje {
+  position: relative;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  max-width: 700px;
+  margin: -75px auto;
+  padding: 30px 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+}
+
+.pasaje-contenido {
+  position: relative;
+  z-index: 1;
+}
+
+.pasaje-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  h2 {
+    font-family: "SUSE Mono", monospace;
+    color: #333;
+  }
+}
+
+.logo-empresa {
+  width: 80px;
+  height: auto;
+}
+
+.pasaje-info {
+  p {
+    font-size: 1.1rem;
+    margin: 6px 0;
+  }
+}
+
+.pasaje-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 30px;
+}
+
+.logo-inferior {
+  width: 80px;
+}
+
+.codigo-barra {
+  width: 180px;
+  height: auto;
+}
+

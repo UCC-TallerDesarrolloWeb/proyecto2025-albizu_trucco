@@ -1,0 +1,43 @@
+.auth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .btn {
+    margin-left: 8px;
+  }
+}
+
+.perfil-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.perfil-icono img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.perfil-dropdown {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: #fff;
+  border: 1px solid var(--gris-claro);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  width: 140px;
+  z-index: 300;
+
+  &.hidden {
+    display: none;
+  }
+}
+

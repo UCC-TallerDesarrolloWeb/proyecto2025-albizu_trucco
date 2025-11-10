@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from './authlogicas';
 import { soloLetras } from '@utils/validators';
 import Button from '@components/componente generico/Button';
+import '@styles/_modal.scss';
 
 /**
  * Componente dinámico para los modales de Iniciar Sesión y Registrar Usuario.

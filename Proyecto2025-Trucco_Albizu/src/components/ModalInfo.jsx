@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@components/componente generico/Button';
+import '@styles/_modal.scss';
 
 function ModalInfo({ isVisible, message, onClose }) {
     if (!isVisible) return null;

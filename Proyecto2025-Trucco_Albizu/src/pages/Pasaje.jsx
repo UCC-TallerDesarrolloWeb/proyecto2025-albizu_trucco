@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { fmtUSD } from '@components/Vueloutils';
 import logoImg from '@assets/Logo AM.png';
 import pasajeImg from '@assets/pasaje.png';
+import '@styles/_pasaje.scss';
+import '@styles/_layout.scss';
 
 const formatPassengerText = (busqueda) => {
     if (!busqueda || busqueda.pasajeros === 0) return '0 pasajeros';

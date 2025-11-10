@@ -1,0 +1,40 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+
+  &.hidden {
+    display: none;
+  }
+
+  .modal-content {
+    &.modal-sm {
+      max-width: 360px;
+    }
+
+    h3 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .modal-msg {
+      margin: 8px 0 14px;
+      font-weight: 600;
+    }
+  }
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 260px;
+}
+

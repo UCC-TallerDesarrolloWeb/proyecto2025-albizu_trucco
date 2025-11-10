@@ -3,6 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { getSorted, fmtUSD } from '@components/Vueloutils';
 import Button from '@components/componente generico/Button';
 import logoImg from '@assets/Logo AM.png'; 
+import '@styles/_layout.scss';
+import '@styles/_results.scss';
 
 const FlightCard = ({ vuelo, onSelect }) => {
     const {
