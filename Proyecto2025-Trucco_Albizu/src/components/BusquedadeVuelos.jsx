@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { horaRandom, precioBasePara } from './Vueloutils';
-import { getAeropuertos } from '../services/apiService';
+import { getAeropuertos } from '@api/apiService.js';
 import lupaImg from '@assets/lupa.png';
 
 const initialPassengers = { adultos: 1, ninos: 0, bebes: 0 };
 const MAX_PASAJEROS = 10;
 const MAX_AUTOCOMPLETE_RESULTS = 15;
 const MAX_FECHA = '2027-12-31';
+const obtenerFechaLocalISO = (date = new Date()) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+};
+const hoyISO = obtenerFechaLocalISO();
 
 const formatAeropuerto = (aeropuerto) => {
     if (!aeropuerto) return '';
@@ -84,7 +91,6 @@ function FlightSearch({ showInfoModal }) {
         }, 120);
     };
 
-    // Cargar aeropuertos al montar el componente
     useEffect(() => {
         const cargarDatos = async () => {
             try {
@@ -139,13 +145,11 @@ function FlightSearch({ showInfoModal }) {
         setSearchOrigen(formatAeropuerto(aeropuerto));
         setDropdownOrigenOpen(false);
 
-        // Si el destino coincide con el mismo aeropuerto, reiniciar selección
-        if (selectedDestino && selectedDestino.id === aeropuerto.id) {
+       if (selectedDestino && selectedDestino.id === aeropuerto.id) {
             setSelectedDestino(null);
             setSearchDestino('');
         }
 
-        // Actualizar lista de destinos excluyendo el seleccionado
         setFilteredDestino(filterAeropuertosList(aeropuertos, searchDestino, aeropuerto.id));
         setMessage('');
     };
@@ -192,17 +196,14 @@ function FlightSearch({ showInfoModal }) {
             const newValue = prev[type] + delta;
             const minAdultos = type === 'adultos' ? 1 : 0;
             
-            // Validar mínimo (al menos 1 adulto)
             if (newValue < minAdultos) {
                 return prev;
             }
             
-            // Calcular el nuevo total de pasajeros
-            const nuevoTotal = (type === 'adultos' ? newValue : prev.adultos) +
+           const nuevoTotal = (type === 'adultos' ? newValue : prev.adultos) +
                              (type === 'ninos' ? newValue : prev.ninos) +
                              (type === 'bebes' ? newValue : prev.bebes);
             
-            // Validar máximo de 10 pasajeros
             if (delta > 0 && nuevoTotal > MAX_PASAJEROS) {
                 if (showInfoModal) {
                     showInfoModal(`El número máximo de pasajeros es ${MAX_PASAJEROS}.`);
@@ -549,7 +550,7 @@ function FlightSearch({ showInfoModal }) {
                 </div>
 
                 
-                <div className="field">
+                <div className="field field--solo-ida">
                     <input 
                         type="checkbox" 
                         id="soloIda" 
@@ -568,6 +569,7 @@ function FlightSearch({ showInfoModal }) {
                         type="date"
                         required
                         value={fechaIda}
+                        min={hoyISO}
                         max={MAX_FECHA}
                         onChange={(e) => setFechaIda(e.target.value)} 
                     />
@@ -580,6 +582,7 @@ function FlightSearch({ showInfoModal }) {
                         name="fechaVuelta" 
                         type="date"
                         value={fechaVuelta}
+                        min={fechaIda || hoyISO}
                         max={MAX_FECHA}
                         onChange={(e) => setFechaVuelta(e.target.value)}
                         disabled={soloIda}

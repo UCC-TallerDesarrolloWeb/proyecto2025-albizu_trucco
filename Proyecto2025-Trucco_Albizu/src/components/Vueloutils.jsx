@@ -1,6 +1,4 @@
 
-// CIUDADES ya no se usa, se cargan desde db.json
-
 
 export const fmtUSD = new Intl.NumberFormat("es-AR", {
     style: "currency",
@@ -24,7 +22,6 @@ export const toMinutes = (hhmm) => {
 };
 
 
-// allowedDestinos y allowedOrigens ya no se usan, se manejan en el componente con filtrado por país
 
 
 export const horaRandom = () => {
@@ -40,7 +37,6 @@ export const horaRandom = () => {
  * @returns {number} Precio base aleatorio
  */
 export const precioBasePara = (origen, destino) => {
-    // Rutas domésticas en Argentina (más baratas)
     const ciudadesArgentina = ["Córdoba", "Buenos Aires"];
     const esRutaDomesticaArgentina = 
         ciudadesArgentina.includes(origen) && ciudadesArgentina.includes(destino);
@@ -49,7 +45,6 @@ export const precioBasePara = (origen, destino) => {
         return Math.floor(Math.random() * 81) + 20; // $20 - $100
     }
     
-    // Rutas internacionales (más caras)
     return Math.floor(Math.random() * 601) + 300; // $300 - $900
 };
 

@@ -81,8 +81,15 @@ body, html {
 
 .search-card {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
+  grid-template-columns:
+    minmax(110px, 0.6fr)   /* Pasajeros */
+    minmax(260px, 1.3fr)   /* Origen */
+    minmax(60px, 0.2fr)    /* Swap */
+    minmax(260px, 1.3fr)   /* Destino */
+    minmax(140px, 0.5fr)   /* Solo ida */
+    minmax(200px, 1fr)     /* Fecha ida */
+    minmax(200px, 1fr);    /* Fecha vuelta */
+  gap: 18px;
   align-items: end;
   background: rgba(255, 255, 255, 0.774);
   border: 1px solid var(--gris-claro);
@@ -106,11 +113,12 @@ body, html {
 
   .autocomplete__wrapper {
     position: relative;
+    width: 100%;
   }
 
   .autocomplete__input {
     width: 100%;
-    padding: 10px;
+    padding: 12px 14px;
     border: 1px solid var(--negro);
     border-radius: 10px;
     font-size: 15px;
@@ -229,11 +237,30 @@ body, html {
 .swap {
   align-self: end;
   justify-self: center;
-  padding: 8px 10px;
+  padding: 12px 14px;
   border: 1px solid var(--gris-oscuro);
   background: #fff;
   border-radius: 10px;
   cursor: pointer;
+  margin-top: 22px;
+  min-width: 52px;
+}
+
+.field--solo-ida {
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-top: 6px;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+
+  label {
+    margin: 0;
+  }
 }
 
 .field {
