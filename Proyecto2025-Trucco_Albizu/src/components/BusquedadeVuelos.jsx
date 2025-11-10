@@ -136,6 +136,7 @@ function FlightSearch({ showInfoModal }) {
 
     const handleOrigenInputChange = (value) => {
         setSearchOrigen(value);
+        setMessage('');
         if (selectedOrigen) {
             setSelectedOrigen(null);
             if (selectedDestino) {
@@ -144,16 +145,53 @@ function FlightSearch({ showInfoModal }) {
             }
         }
         setDropdownOrigenOpen(true);
+        if (!value?.trim()) {
+            setMessage('Ingresá una ciudad o código IATA para el origen.');
+        }
         setFilteredOrigen(filterAeropuertosList(aeropuertos, value, null));
     };
 
     const handleDestinoInputChange = (value) => {
         setSearchDestino(value);
+        setMessage('');
         if (selectedDestino) {
             setSelectedDestino(null);
         }
         setDropdownDestinoOpen(true);
+        if (!value?.trim()) {
+            setMessage('Ingresá una ciudad o código IATA para el destino.');
+        }
         setFilteredDestino(filterAeropuertosList(aeropuertos, value, selectedOrigen?.id ?? null));
+    };
+
+    const handleFechaIdaChange = (value) => {
+        setFechaIda(value);
+        if (!value) {
+            setMessage('Seleccioná una fecha de ida.');
+            return;
+        }
+        if (!soloIda && fechaVuelta && new Date(value) > new Date(fechaVuelta)) {
+            setMessage('La fecha de vuelta debe ser posterior a la fecha de ida.');
+            return;
+        }
+        setMessage('');
+    };
+
+    const handleFechaVueltaChange = (value) => {
+        setFechaVuelta(value);
+        if (soloIda) {
+            setMessage('');
+            return;
+        }
+        if (!value) {
+            setMessage('Seleccioná una fecha de vuelta.');
+            return;
+        }
+        if (fechaIda && new Date(value) < new Date(fechaIda)) {
+            setMessage('La fecha de vuelta debe ser posterior a la fecha de ida.');
+            return;
+        }
+        setMessage('');
     };
 
     const handleSelectOrigen = (aeropuerto) => {
@@ -161,6 +199,7 @@ function FlightSearch({ showInfoModal }) {
         setSelectedOrigen(aeropuerto);
         setSearchOrigen(formatAeropuerto(aeropuerto));
         setDropdownOrigenOpen(false);
+        setMessage('');
 
        if (selectedDestino && selectedDestino.id === aeropuerto.id) {
             setSelectedDestino(null);
@@ -168,7 +207,6 @@ function FlightSearch({ showInfoModal }) {
         }
 
         setFilteredDestino(filterAeropuertosList(aeropuertos, searchDestino, aeropuerto.id));
-        setMessage('');
     };
 
     const handleSelectDestino = (aeropuerto) => {
@@ -209,12 +247,17 @@ function FlightSearch({ showInfoModal }) {
             
             return { ...prev, [type]: newValue };
         });
+        setMessage('');
     };
 
     const handleSoloIdaChange = (e) => {
-        setSoloIda(e.target.checked);
-        if (e.target.checked) {
+        const checked = e.target.checked;
+        setSoloIda(checked);
+        setMessage('');
+        if (checked) {
              setFechaVuelta('');
+        } else if (!fechaVuelta) {
+            setMessage('Seleccioná una fecha de vuelta.');
         }
     };
     const handleSwapClick = () => {
@@ -548,7 +591,7 @@ function FlightSearch({ showInfoModal }) {
                         value={fechaIda}
                         min={hoyISO}
                         max={MAX_FECHA}
-                        onChange={(e) => setFechaIda(e.target.value)} 
+                        onChange={(e) => handleFechaIdaChange(e.target.value)} 
                     />
                 </div>
 
@@ -561,7 +604,7 @@ function FlightSearch({ showInfoModal }) {
                         value={fechaVuelta}
                         min={fechaIda || hoyISO}
                         max={MAX_FECHA}
-                        onChange={(e) => setFechaVuelta(e.target.value)}
+                        onChange={(e) => handleFechaVueltaChange(e.target.value)}
                         disabled={soloIda}
                     />
                 </div>
