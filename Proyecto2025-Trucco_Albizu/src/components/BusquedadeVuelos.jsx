@@ -461,7 +461,7 @@ function FlightSearch({ showInfoModal }) {
                         </div>
                         
                         {totalPasajeros >= MAX_PASAJEROS && (
-                            <p style={{ color: '#d32f2f', fontSize: '12px', margin: '8px 0 0', textAlign: 'center' }}>
+                            <p className="max-passengers-warning">
                                 Máximo {MAX_PASAJEROS} pasajeros
                             </p>
                         )}
