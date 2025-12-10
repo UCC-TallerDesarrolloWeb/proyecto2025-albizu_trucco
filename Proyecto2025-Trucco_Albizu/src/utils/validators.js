@@ -79,4 +79,3 @@ export const soloLetras = (texto) => {
 
   return true;
 };
-
