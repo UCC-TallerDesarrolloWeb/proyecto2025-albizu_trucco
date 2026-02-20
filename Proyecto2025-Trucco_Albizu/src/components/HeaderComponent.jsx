@@ -48,6 +48,7 @@ function HeaderComponent({ showInfoModal }) {
                 <Link to="/" className="logo" aria-label="Inicio">
                     <img src={logoImg} alt="AM Viajes" />
                 </Link>
+                <a href="/HTML-CSS-Js/index.html" className="btn-version-html">Versión HTML</a>
             </div>
             
             <nav className="auth">

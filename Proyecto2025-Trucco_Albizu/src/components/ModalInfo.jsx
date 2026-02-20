@@ -1,4 +1,3 @@
-import React from 'react';
 import Button from '@components/componente generico/Button';
 import '@styles/_modal.scss';
 
