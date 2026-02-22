@@ -1,6 +1,6 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
-const Button = React.forwardRef(function Button(
+const Button = forwardRef(function Button(
   {
     variant = 'default',
     className = '',

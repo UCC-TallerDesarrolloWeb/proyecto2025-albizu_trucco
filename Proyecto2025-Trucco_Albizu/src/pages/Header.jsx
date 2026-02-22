@@ -1,7 +1,7 @@
 import HeaderComponent from '@components/HeaderComponent';
 import FlightSearch from '@components/BusquedadeVuelos';
 import ModalInfo from '@components/ModalInfo';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import '@styles/_layout.scss';
 
 

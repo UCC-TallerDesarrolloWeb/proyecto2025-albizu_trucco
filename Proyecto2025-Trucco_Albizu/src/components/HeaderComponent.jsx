@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from './authlogicas'; 
 import AuthModal from './Authmodal'; 
 import Button from '@components/componente generico/Button';
